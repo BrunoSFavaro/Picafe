@@ -20,5 +20,6 @@ import User
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('User/', include("User.urls"))
+    path('User/', include("User.urls")),
+    path('pages/', include("pages.urls"))
 ]
