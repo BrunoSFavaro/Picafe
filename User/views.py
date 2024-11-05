@@ -1,0 +1,35 @@
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+
+# Create your views here.
+def index(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("login"))
+    return render(request, "User/user.html")
+
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        user = authenticate(request, username=username, password=password)
+
+            # If user objet is returned, log in and route to index page:
+        if user:
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+            # Otherwise, return login page again with new context
+        else:
+            return render(request, "User/login.html", {
+            "message": "Invalid Credentials"
+            })
+        
+    return render(request, "User/login.html")
+
+def logout_view(request):
+    logout(request)
+    return render(request, "User/login.html", {
+        "message": "Logged Out"
+    })
