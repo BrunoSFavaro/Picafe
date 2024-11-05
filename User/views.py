@@ -1,7 +1,11 @@
+from django.contrib.auth.models import User as AuthUser  # Renomeie o modelo User para AuthUser
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.contrib.auth.models import User
+
+import User
 
 # Create your views here.
 def index(request):
@@ -19,7 +23,7 @@ def login_view(request):
             # If user objet is returned, log in and route to index page:
         if user:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("User/index"))
             # Otherwise, return login page again with new context
         else:
             return render(request, "User/login.html", {
@@ -33,3 +37,18 @@ def logout_view(request):
     return render(request, "User/login.html", {
         "message": "Logged Out"
     })
+
+def signup(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        email = request.POST["email"]
+
+        # Creating a new user
+        user = AuthUser.objects.create_user(username=username, password=password, email=email)
+
+        # Authenticate and login the user automatically after the sign up
+        login(request, user)
+        return redirect("index")  # Redirect to index 
+
+    return render(request, "User/signup.html")
