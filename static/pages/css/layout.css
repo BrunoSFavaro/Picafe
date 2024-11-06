@@ -1,6 +1,7 @@
 html, body {
     background-color: #733426;
     height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -34,7 +35,7 @@ main {
     flex: 1;
     /* background-color: #f4f4f9; */
     padding: 2rem;
-    width: 100%;
+    /* width: 100%; */
     text-align: center;
 }
 
