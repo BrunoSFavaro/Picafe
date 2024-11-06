@@ -1,3 +1,48 @@
-h1 {
-    color: pink;
+html, body {
+    background-color: #733426;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar's style  */
+.navbar {
+    background-color: #BF7E45;
+    padding: 1rem;
+}
+.logo a {
+    font-size: 1.5rem;
+    color: #fff;
+    text-decoration: none;
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 0.1rem;
+    justify-content: space-around;
+}
+.nav-links a {
+    color: black;
+    text-decoration: none;
+}
+
+/* Conteúdo do corpo */
+main {
+    flex: 1;
+    /* background-color: #f4f4f9; */
+    padding: 2rem;
+    width: 100%;
+    text-align: center;
+}
+
+/* Footer */
+footer {
+    background-color: #D9C7A7;
+    color: black;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
 }

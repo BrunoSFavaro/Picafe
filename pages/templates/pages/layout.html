@@ -9,8 +9,32 @@
     <title>Picafé</title>
 </head>
 <body>
-    <h1>Site do Picafe</h1>
-    {% block body %}
-    {% endblock %}
+    <!-- Navbar -->
+    <header>
+        <div class="logo">
+            <a href="{% url 'index' %}">Picafé</a>
+        </div>
+        <nav class="navbar">
+            
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Produtos</a></li>
+                <li><a href="#">Contato</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content  -->
+    <main>
+        {% block body %}
+        {% endblock %}
+    </main> 
+
+    <!-- footer  -->
+     <footer>
+        <p>© 2024 Picafé - Todos os direitos reservados.</p>
+     </footer>
+    
 </body>
 </html>
