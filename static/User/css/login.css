@@ -1,17 +1,56 @@
 body {
     background-color: #733426;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    min-height: 100vh;
+    margin: 0;
 }
 
 /* Form container */
-.login-form, .signup-form{
-    width: 100%;
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 30px;
+.form-container {
+    perspective: 1000px;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    width: 100%;             /* O contêiner pode ocupar toda a largura da tela */
+    max-width: 400px;        /* Limita a largura máxima a 400px */
+    height: auto;            /* Ajusta a altura automaticamente */
+}
+
+/* O contêiner de rotação interna */
+.form-inner {
+    position: relative;
+    width: 100%; /* Ocupa 100% da largura disponível */
+    height: auto; /* Ajusta a altura automaticamente ao conteúdo */
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center center; /* Garantir que a rotação aconteça pelo centro */
+}
+
+/* Formulários (Login e Signup) */
+.login-form, .signup-form {
+    width: 100%; /* Ocupa toda a largura disponível */
+    padding: 40px 30px;
     background-color: #D9C7A7;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     font-family: 'Arial', sans-serif;
+    backface-visibility: hidden;
+    position: relative; /* Retirado position absolute */
+}
+
+/* Formulário de Signup fica rotacionado inicialmente */
+.signup-form {
+    transform: rotateY(180deg);
+}
+
+/* Quando o form-container tem a classe 'flipped', gira a .form-inner */
+.form-container.flipped .form-inner {
+    transform: rotateY(180deg);
 }
 
 /* Form Group */
@@ -25,7 +64,7 @@ body {
     padding: 12px;
     font-size: 16px;
     border: 2px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
@@ -33,6 +72,8 @@ body {
 .input-field:focus {
     border-color: #BF7E45;
     outline: none;
+    background-color: #f9f2e7;
+    box-shadow: 0 0 5px rgba(191, 126, 69, 0.5);
 }
 
 /* Submit button */
@@ -43,24 +84,30 @@ body {
     background-color: #BF7E45;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: filter 0.5s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .submit-btn:hover {
-    filter: brightness(0.9);
+    background-color: #a36738;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Sign up link */
 .signup-link {
     text-align: center;
     margin-top: 20px;
+    font-size: 14px;
+    color: #333;
 }
 
 .signup-link a {
-    color: #007bff;
+    color: #0056b3;
     text-decoration: none;
+    font-weight: bold;
 }
 
 .signup-link a:hover {

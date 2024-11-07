@@ -5,7 +5,61 @@
         <div>{{ message }}</div>
     {% endif %}
 
-    <form action="{% url 'login' %}" method="post" class="login-form">
+    <div class="form-container">
+        <div class="form-inner">
+            <!-- Login Form -->
+            <form action="{% url 'login' %}" method="post" class="login-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Username" class="input-field">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" class="input-field">
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Login" class="submit-btn">
+                </div>
+                <div class="signup-link">
+                    Ainda não tá cadastrado? Cria uma conta 
+                    <a href="#" onclick="toggleForm()">aqui.</a>
+                </div>
+            </form>
+
+            <!-- Signup Form -->
+            <form action="{% url 'signup' %}" method="post" class="signup-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Username" class="input-field">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="email" placeholder="Email" class="input-field">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" class="input-field">
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Sign Up" class="submit-btn">
+                </div>
+                <div class="signup-link">
+                    Já tem conta? Acesse ela
+                    <a href="#" onclick="toggleForm()">aqui.</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            document.querySelector('.form-container').classList.toggle('flipped');
+        }
+    </script>
+        
+    
+
+
+
+
+    <!-- <form action="{% url 'login' %}" method="post" class="login-form">
         {% csrf_token %}
         <div class="form-group">
             <input type="text" name="username" placeholder="Username" class="input-field">
@@ -20,6 +74,6 @@
             Ainda não tá cadastrado? Cria um conta 
             <a href="{% url 'signup' %}">aqui.</a>
         </div>
-    </form>
+    </form> -->
      
 {% endblock %}
