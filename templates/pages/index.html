@@ -1,5 +1,10 @@
 {% extends "pages/layout.html" %}
 
 {% block body %}
-        <p>Salve</p>
+        {% for product in products %}
+                <div class="featured-products">
+                    <h3>{{ product.name }}</h3> 
+                    <p>{{ product.price }}</p>   
+                </div>
+        {% endfor %}
 {% endblock %}
