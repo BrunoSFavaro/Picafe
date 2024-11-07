@@ -3,8 +3,9 @@
 {% block body %}
         {% for product in products %}
                 <div class="featured-products">
-                    <h3>{{ product.name }}</h3> 
-                    <p>{{ product.price }}</p>   
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        <h3>{{ product.name }}</h3> 
+                        <p>{{ product.price }}</p>   
                 </div>
         {% endfor %}
 {% endblock %}
