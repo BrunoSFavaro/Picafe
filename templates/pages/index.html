@@ -1,11 +1,13 @@
 {% extends "pages/layout.html" %}
 
 {% block body %}
-        {% for product in products %}
-                <div class="featured-products">
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                        <h3>{{ product.name }}</h3> 
-                        <p>{{ product.price }}</p>   
-                </div>
-        {% endfor %}
+        <div class="product-container">
+                {% for product in products %}
+                        <div class="featured-products">
+                                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                                <h3>{{ product.name }}</h3> 
+                                <p>{{ product.price }}</p>   
+                        </div>
+                {% endfor %}
+        </div>
 {% endblock %}
