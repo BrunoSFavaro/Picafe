@@ -3,7 +3,7 @@ body {
 }
 
 /* Form container */
-.login-form {
+.login-form, .signup-form{
     width: 100%;
     max-width: 400px;
     margin: 50px auto;
