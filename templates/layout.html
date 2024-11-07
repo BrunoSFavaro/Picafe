@@ -9,11 +9,14 @@
     <title>Picafé</title>
 </head>
 <body>
-    <!-- Navbar -->
     <header>
         <div class="logo">
-            <a href="{% url 'index' %}">Picafé</a>
+            <a href="{% url 'index' %}">
+                <img src="{% static 'pages/images/LogoBranca.svg' %}" alt="Logo branca">
+            </a>
         </div>
+        
+        <!-- Navbar -->
         <nav class="navbar">
             
             <ul class="nav-links">
