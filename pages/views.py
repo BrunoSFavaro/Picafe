@@ -10,8 +10,6 @@ def index(request):
 
 def product(request, product_id):
     product = Product.objects.get(id=product_id)
-    price = product.price()
     return render(request, "pages/product.html", {
         "product": product,
-        "price": price,
     })
