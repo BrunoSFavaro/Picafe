@@ -7,3 +7,11 @@ def index(request):
     return render(request, "pages/index.html", {
         'products': featured_products
     })
+
+def product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    price = product.price()
+    return render(request, "pages/product.html", {
+        "product": product,
+        "price": price,
+    })
