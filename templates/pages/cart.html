@@ -1,0 +1,23 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+    <h1>Carrinho de Compras</h1>
+
+    <div class="cart-items">
+        {% for item in cart_items %}
+            <div class="product-item">
+                <p>{{ item.product.name }} ({{ item.quantity }})</p>
+                <p>R${{ item.product.price }}</p>
+                <a href="{% url 'remove_from_cart' item.id %}">Remover</a>
+            </div>
+        {% empty %}
+            <p>Seu carrinho está vazio</p>
+        {% endfor %}
+    </div>
+
+    <p>Valor total: R${{ total_price }}</p>
+
+    <a href="{% url 'products' %}">Continuar comprando</a>
+
+{% endblock %}
