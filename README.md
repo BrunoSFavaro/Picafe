@@ -15,7 +15,7 @@ O Picafé é um projeto de e-commerce em desenvolvimento, com foco na venda de c
 ## Tecnologias Utilizadas
 - **Linguagem**: Python
 - **Framework**: Django
-- **Banco de Dados**: SQLite (padrão) / SQL (planejado para migração)
+- **Banco de Dados**: SQL
 - **Front-end**: HTML, CSS, Bootstrap (para estilização básica)
 
 ---
