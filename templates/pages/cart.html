@@ -7,12 +7,17 @@
     <div class="cart-items">
         {% for item in cart_items %}
             <div class="product-item">
-                <p>{{ item.product.name }} ({{ item.quantity }})</p>
-                <p>R${{ item.product.price }}</p>
-                <a href="{% url 'add_to_cart' item.product.id %}">Adiciona mais um chefe</a>
-                <a href="{% url 'remove_from_cart' item.id %}">Remover</a>
-                <a href="{% url 'subtract_from_cart' item.product.id %}">Tira um aí chefe</a>
-
+                <img class="product-image-cart" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                <div class="product-info">
+                    <p class="product-name">{{ item.product.name }}</p>
+                    <p class="product-price">R${{ item.product.price }}</p>
+                </div>
+                <div class="quantity-controls">
+                    <a class="minus-btn" href="{% url 'subtract_from_cart' item.product.id %}">-</a>
+                    <span class="quantity">{{ item.quantity }}</span>
+                    <a class="plus-btn" href="{% url 'add_to_cart' item.product.id %}">+</a>
+                    <a class="remove-btn" href="{% url 'remove_from_cart' item.id %}">Remover</a>
+                </div>
             </div>
         {% empty %}
             <p>Seu carrinho está vazio</p>
