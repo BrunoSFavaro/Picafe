@@ -13,3 +13,9 @@ def product(request, product_id):
     return render(request, "pages/product.html", {
         "product": product,
     })
+
+def products(request):
+    list_products = Product.objects.all()
+    return render(request, "pages/products.html", {
+        'products': list_products
+    })

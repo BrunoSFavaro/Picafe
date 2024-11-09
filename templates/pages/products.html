@@ -1,0 +1,14 @@
+{% extends "pages/layout.html" %}
+
+{% block body %}
+        <div class="product-container">
+                {% for product in products %}
+                        <div class="featured-products">
+                                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                                <a href="{% url 'product' product.id %}"><h3>{{ product.name }}</h3></a>
+                                <p>⭐⭐⭐⭐⭐</p>
+                                <p>R${{ product.price }}</p>
+                        </div>
+                {% endfor %}
+        </div>
+{% endblock %}

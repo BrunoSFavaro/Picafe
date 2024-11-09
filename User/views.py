@@ -27,7 +27,7 @@ def login_view(request):
             # Otherwise, return login page again with new context
         else:
             return render(request, "User/login.html", {
-            "message": "Invalid Credentials"
+            "message": "Usuário ou senha inválido"
             })
         
     return render(request, "User/login.html")
