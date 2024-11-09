@@ -1,5 +1,5 @@
 html, body {
-    background-color: #733426;
+    background-color: #D9C7A7;
     height: 100%;
     width: 100%;
     margin: 0;
@@ -7,6 +7,10 @@ html, body {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+}
+
+.logo {
+    background-color: #733426;
 }
 
 .logo img{
@@ -78,8 +82,8 @@ main {
 .product-item {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #BF7E45;
-    padding: 10px 0;
+    border-bottom: 1px solid #733426;
+    padding: 0.6rem 0;
 }
 
 .product-image-cart {
@@ -103,16 +107,17 @@ main {
 }
 
 .minus-btn, .plus-btn, .remove-btn {
-    background: #eee;
+    background: transparent;
     padding: 0.3rem 0.6rem;
     text-decoration: none;
-    color: #333;
+    color: black;
+    border: 2px solid black;
     border-radius: 0.3rem;
 }
 
 /* Footer */
 footer {
-    background-color: #D9C7A7;
+    background-color: #733426;
     color: black;
     text-align: center;
     padding: 1rem;
