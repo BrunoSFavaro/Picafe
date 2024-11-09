@@ -38,4 +38,4 @@ def add_to_cart(request, product_id):
 def remove_from_cart(request, item_id):
     cart_item = CartItem.objects.get(id=item_id)
     cart_item.delete()
-    return redirect('cart_view')
+    return redirect('view_cart')
