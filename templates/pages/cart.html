@@ -9,7 +9,10 @@
             <div class="product-item">
                 <p>{{ item.product.name }} ({{ item.quantity }})</p>
                 <p>R${{ item.product.price }}</p>
+                <a href="{% url 'add_to_cart' item.product.id %}">Adiciona mais um chefe</a>
                 <a href="{% url 'remove_from_cart' item.id %}">Remover</a>
+                <a href="{% url 'subtract_from_cart' item.product.id %}">Tira um aí chefe</a>
+
             </div>
         {% empty %}
             <p>Seu carrinho está vazio</p>
