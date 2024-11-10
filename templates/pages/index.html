@@ -7,7 +7,7 @@
                                 <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
                                 <a href="{% url 'product' product.id %}"><h3>{{ product.name }}</h3></a>
                                 <p>⭐⭐⭐⭐⭐</p>
-                                <p>R${{ product.price }}</p>
+                                <p class="product-price">R${{ product.price }}</p>
                         </div>
                 {% endfor %}
         </div>
