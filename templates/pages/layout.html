@@ -18,13 +18,22 @@
         
         <!-- Navbar -->
         <nav class="navbar">
-            
-            <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="{% url 'products' %}">Produtos</a></li>
-                <li><a href="#">Contato</a></li>
-                <li><a href="{% url 'login' %}">Login</a></li>
-            </ul>
+            <div class="hamburguer">
+                <img src="{% static 'pages/images/Hamb.png' %}" alt="">
+            </div>
+
+            <div class="search-bar">
+                <textarea name="" id="" placeholder="Busque por produtos"></textarea>
+            </div>
+
+            <div class="nav-btns">
+                <ul class="nav-links">
+                    <li><a href="{% url 'view_cart' %}"><img src="{% static 'pages/images/CartIcon.png' %}" alt=""></a></li>
+                    <li><a href="">Dashboard</a></li>
+                    <li><a href="{% url 'products' %}">Produtos</a></li>
+                    <li><a href="{% url 'login' %}">Entrar</a></li>
+                </ul>
+            </div>
         </nav>
     </header>
 
