@@ -48,7 +48,9 @@ html, body {
 
 .nav-btns {
     flex: 1;
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 2rem 0 0;
 }
 
 .nav-links {
