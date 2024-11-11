@@ -36,14 +36,17 @@ html, body {
 .search-bar {
     flex: 2;
     text-align: center;
+    justify-content: center;
 }
 
 .search-bar textarea {
     width: 100%;
     max-width: 400px;
     text-align: center;
+    padding: 10px 0 0 0;
     background-color: #EBBB92;
     border-radius: 2rem;
+    resize: none;
 }
 
 .nav-btns {
