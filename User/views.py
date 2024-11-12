@@ -24,7 +24,7 @@ def login_view(request):
             # If user objet is returned, log in and route to index page:
         if user:
             login(request, user)
-            return HttpResponseRedirect(reverse("user_index"))
+            return HttpResponseRedirect(reverse("index"))
             # Otherwise, return login page again with new context
         else:
             return render(request, "User/login.html", {
@@ -50,7 +50,7 @@ def signup(request):
 
         # Authenticate and login the user automatically after the sign up
         login(request, user)
-        return redirect("user_index")  # Redirect to index 
+        return redirect("index")  # Redirect to index 
 
     return render(request, "User/signup.html")
 

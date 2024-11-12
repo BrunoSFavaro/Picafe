@@ -1,4 +1,5 @@
 {% extends "User/baselayout.html" %}
+{% load static %}
 
 {% block body %}
     {% if message %}
@@ -8,6 +9,7 @@
     <form action="{% url 'login' %}" method="post" class="login-form">
         {% csrf_token %}
         <div class="form-group">
+            <a class="BackArrow" href="{% url 'index' %}"><---</a>
             <input type="text" name="username" placeholder="Username" class="input-field">
         </div>
         <div class="form-group">
