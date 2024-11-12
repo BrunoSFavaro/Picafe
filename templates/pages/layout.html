@@ -31,7 +31,11 @@
                     <li><a href="{% url 'view_cart' %}"><img src="{% static 'pages/images/CartIcon.png' %}" alt=""></a></li>
                     <li><a href="">Dashboard</a></li>
                     <li><a href="{% url 'products' %}">Produtos</a></li>
-                    <li><a href="{% url 'login' %}">Entrar</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">Perfil</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Entrar</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
