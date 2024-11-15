@@ -32,7 +32,14 @@
                     <li><a href="">Dashboard</a></li>
                     <li><a href="{% url 'products' %}">Produtos</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'profile' %}">Perfil</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropbtn">{{ user.username }}</a>
+                        <div class="dropdown-content">
+                            <a href="{% url 'profile' %}">Meu Perfil</a>
+                            <a href="#">Meus Pedidos</a>
+                            <a href="{% url 'logout' %}">Log Out</a>
+                        </div>
+                    </li>
                     {% else %}
                         <li><a href="{% url 'login' %}">Entrar</a></li>
                     {% endif %}
@@ -51,6 +58,6 @@
      <footer>
         <p>© 2024 Picafé - Todos os direitos reservados.</p>
      </footer>
-    
+
 </body>
 </html>
