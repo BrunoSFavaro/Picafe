@@ -21,19 +21,48 @@ def products(request):
     })
 
 def view_cart(request):
-    cart_items = CartItem.objects.filter(user=request.user)
-    total_price = sum(item.product.price * item.quantity for item in cart_items)
+    total_price = 0
+    if not request.user.is_authenticated:
+        cart_items = request.session.get('cart', {})
+        detailed_cart = []
+
+        for product_id, quantity in cart_items.items():
+            product = Product.objects.get(id=product_id)
+            total_price += product.price * quantity
+            detailed_cart.append({
+                'id': product_id,
+                'product': product,
+                'quantity': quantity,
+            })
+    else:
+        cart_items = CartItem.objects.filter(user=request.user)
+        total_price = sum(item.product.price * item.quantity for item in cart_items)
+        detailed_cart = cart_items
     return render(request, "pages/cart.html", {
-        'cart_items': cart_items,
+        'cart_items': detailed_cart,
         'total_price': total_price
     })
 
 def add_to_cart(request, product_id):
-    product = Product.objects.get(id=product_id)
-    cart_item, created = CartItem.objects.get_or_create(product=product, user=request.user)
-    cart_item.quantity += 1
-    cart_item.save()
-    return redirect('view_cart')
+    if not request.user.is_authenticated:
+        cart = request.session.get('cart', {})
+
+        product_id_str = str(product_id)
+        #Atualiza a quantidade do produto no carrinho
+        if product_id_str in cart:
+            cart[product_id_str] += 1
+        else:
+            cart[product_id_str] = 1
+
+        request.session['cart'] = cart
+        request.session.modified = True
+        return redirect('view_cart')
+    else:
+        product = Product.objects.get(id=product_id)
+        cart_item, created = CartItem.objects.get_or_create(product=product, user=request.user)
+        cart_item.quantity += 1
+        cart_item.save()
+        return redirect('view_cart')
 
 def subtract_from_cart(request, product_id):
     cart_item = CartItem.objects.filter(product_id=product_id, user=request.user).first()
@@ -45,6 +74,12 @@ def subtract_from_cart(request, product_id):
     return redirect('view_cart')
 
 def remove_from_cart(request, item_id):
-    cart_item = CartItem.objects.get(id=item_id)
-    cart_item.delete()
+    if request.user.is_authenticated:
+        cart_item = CartItem.objects.get(id=item_id, user=request.user)
+        cart_item.delete()
+    else:
+        cart = request.session.get('cart', {})
+        if str(item_id) in cart:
+            del cart[str(item_id)]
+            request.session['cart'] = cart
     return redirect('view_cart')
