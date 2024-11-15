@@ -65,12 +65,23 @@ def add_to_cart(request, product_id):
         return redirect('view_cart')
 
 def subtract_from_cart(request, product_id):
-    cart_item = CartItem.objects.filter(product_id=product_id, user=request.user).first()
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
+    if request.user.is_authenticated:
+        cart_item = CartItem.objects.filter(product_id=product_id, user=request.user).first()
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+        else:
+            cart_item.delete()
     else:
-        cart_item.delete()
+        cart = request.session.get('cart', {})
+        product_id_str = str(product_id)
+        if product_id_str in cart:
+            if cart[product_id_str] > 1:
+                cart[product_id_str] -= 1
+            else:
+                del cart[product_id_str]
+            request.session['cart'] = cart
+            request.session.modified = True
     return redirect('view_cart')
 
 def remove_from_cart(request, item_id):
