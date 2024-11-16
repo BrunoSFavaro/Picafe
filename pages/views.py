@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product, CartItem
+from .models import Product, Cart, CartItem
 
 # Create your views here.
 def index(request):
@@ -93,3 +93,15 @@ def remove_from_cart(request, item_id):
             del cart[str(item_id)]
             request.session['cart'] = cart
     return redirect('view_cart')
+
+def finalize_cart(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    
+    cart = Cart.objects.create(user=request.user, finalized=True)
+
+    CartItem.objects.filter(user=request.user, cart__isnull=True).update(cart=cart)
+
+    return render(request, 'pages/finalize.html', {
+        'cart': cart
+    })
