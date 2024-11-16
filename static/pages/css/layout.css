@@ -62,9 +62,26 @@ html, body {
     list-style: none;
 }
 
-.nav-links a {
+.nav-links > li > a {
+    position: relative;
     color: black;
     text-decoration: none;
+    transition: color .3s ease;
+    display: inline-block;
+}
+
+.nav-links > li > a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0; 
+    height: 2px; 
+    background-color: black;
+    transition: width 0.3s ease;
+}
+.nav-links > li > a:hover::after {
+    width: 100%;
 }
 
 .dropdown {

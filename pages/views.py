@@ -48,7 +48,6 @@ def add_to_cart(request, product_id):
         cart = request.session.get('cart', {})
 
         product_id_str = str(product_id)
-        #Atualiza a quantidade do produto no carrinho
         if product_id_str in cart:
             cart[product_id_str] += 1
         else:
