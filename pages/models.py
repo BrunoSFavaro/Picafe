@@ -27,6 +27,7 @@ class Cart(models.Model):
         ),
         default='open',
     )
+    items = models.ManyToManyField('CartItem', blank=True)
 
     def __str__(self):
         return f'Cart #{self.id} - {self.user.username}'

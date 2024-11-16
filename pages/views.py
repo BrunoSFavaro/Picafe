@@ -97,10 +97,19 @@ def remove_from_cart(request, item_id):
 def finalize_cart(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    
-    cart = Cart.objects.create(user=request.user, finalized=True)
 
-    CartItem.objects.filter(user=request.user, cart__isnull=True).update(cart=cart)
+    cart_items = CartItem.objects.filter(user=request.user)    
+    
+    if not cart_items.exists():
+        return render('view_cart')
+    
+    cart = Cart.objects.create(user=request.user)
+
+    for item in cart_items:
+        cart.items.add(item)
+        item.delete()
+
+    cart.save()
 
     return render(request, 'pages/finalize.html', {
         'cart': cart
