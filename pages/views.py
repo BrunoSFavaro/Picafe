@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product, Cart, CartItem
+from .models import Product, Cart, CartItem, Historic, Order
 
 # Create your views here.
 def index(request):
@@ -101,16 +101,20 @@ def finalize_cart(request):
     cart_items = CartItem.objects.filter(user=request.user, cart__isnull=True)    
     
     if not cart_items.exists():
-        return render('view_cart')
+        return redirect('view_cart')
     
-    cart = Cart.objects.create(user=request.user)
+    total_price = sum(item.product.price * item.quantity for item in cart_items)
+    order = Order.objects.create(user=request.user, total_price=total_price)
 
     for item in cart_items:
-        item.cart = cart
-        item.save()
-
-    cart.calc_total_price()
+        Historic.objects.create(
+            order=order,
+            product=item.product,
+            quantity=item.quantity,
+            date_added=item.date_added
+        )
+        item.delete()
 
     return render(request, 'pages/finalize.html', {
-        'cart': cart
+        'order': order
     })

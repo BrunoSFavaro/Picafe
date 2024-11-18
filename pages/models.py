@@ -45,8 +45,8 @@ class CartItem(models.Model):
     def __str__(self):
         return f'{self.quantity} x {self.product.name}'
     
-class Historico(models.Model):
-    pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE, related_name='historico_items')
+class Historic(models.Model):
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='historico_items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -55,7 +55,7 @@ class Historico(models.Model):
         return f'PEdido #{self.id} - {self.quantity} x {self.product.name}'
 
 
-class Pedido(models.Model):
+class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
