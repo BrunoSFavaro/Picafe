@@ -27,10 +27,10 @@ class Cart(models.Model):
         ),
         default='open',
     )
-    items = models.ManyToManyField('CartItem', blank=True)
 
     def calc_total_price(self):
-        return sum(item.product.price * item.quantity for item in self.items.all())
+        self.total_price = sum(item.product.price * item.quantity for item in self.items.all())
+        self.save()
 
     def __str__(self):
         return f'Cart #{self.id} - {self.user.username}'
@@ -39,6 +39,7 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True, blank=True, related_name="items")
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

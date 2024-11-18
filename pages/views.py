@@ -98,7 +98,7 @@ def finalize_cart(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    cart_items = CartItem.objects.filter(user=request.user)    
+    cart_items = CartItem.objects.filter(user=request.user, cart__isnull=True)    
     
     if not cart_items.exists():
         return render('view_cart')
@@ -106,10 +106,10 @@ def finalize_cart(request):
     cart = Cart.objects.create(user=request.user)
 
     for item in cart_items:
-        cart.items.add(item)
-        item.delete()
+        item.cart = cart
+        item.save()
 
-    cart.save()
+    cart.calc_total_price()
 
     return render(request, 'pages/finalize.html', {
         'cart': cart
