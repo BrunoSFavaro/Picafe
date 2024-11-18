@@ -1,28 +1,21 @@
 {% extends 'pages/layout.html' %}
 
 {% block body %}
-    <h1>Histórico de Pedidos</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Número do Pedido</th>
-                <th>Data</th>
-                <th>Valor Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-            <tr>
-                <td>{{ order.id }}</td>
-                <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
-                <td>R$ {{ order.total_price }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3">Você ainda não fez nenhum pedido.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
+    <div class="order-container">
+        <h1>Histórico de Pedidos</h1>
+        <div class="orders">
+            {% for order in orders %}
+            <div class="order-card">
+                <h2>Pedido #{{ order.id }}</h2>
+                <p><strong>Data:</strong> {{ order.created_at|date:"d/m/Y H:i" }}</p>
+                <p><strong>Valor Total:</strong> R$ {{ order.total_price|floatformat:2 }}</p>
+                <a class="details-btn" href="#">Mais detalhes</a>
+            </div>
+            {% empty %}
+            <p>Você ainda não fez nenhum pedido.</p>
+            {% endfor %}
+        </div>
+    </div>
+    
 {% endblock %}
