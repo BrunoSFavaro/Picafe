@@ -36,7 +36,7 @@
                         <a href="#" class="dropbtn">{{ user.username }}</a>
                         <div class="dropdown-content">
                             <a href="{% url 'profile' %}">Meu Perfil</a>
-                            <a href="#">Meus Pedidos</a>
+                            <a href="{% url 'historic' %}">Meus Pedidos</a>
                             <a href="{% url 'logout' %}">Log Out</a>
                         </div>
                     </li>

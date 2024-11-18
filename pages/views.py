@@ -8,6 +8,9 @@ def index(request):
         'products': featured_products
     })
 
+def historic(request):
+    return render(request, "pages/historic.html")
+
 def product(request, product_id):
     product = Product.objects.get(id=product_id)
     return render(request, "pages/product.html", {
