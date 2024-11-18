@@ -1,7 +1,28 @@
 {% extends 'pages/layout.html' %}
 
 {% block body %}
-
-
+    <h1>Histórico de Pedidos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Número do Pedido</th>
+                <th>Data</th>
+                <th>Valor Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+                <td>R$ {{ order.total_price }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Você ainda não fez nenhum pedido.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Product, Cart, CartItem, Historic, Order
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -8,8 +9,12 @@ def index(request):
         'products': featured_products
     })
 
+@login_required
 def historic(request):
-    return render(request, "pages/historic.html")
+    order_list = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, "pages/historic.html", {
+        'orders': order_list
+    })
 
 def product(request, product_id):
     product = Product.objects.get(id=product_id)
