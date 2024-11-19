@@ -2,6 +2,33 @@
 
 {% block body %}
 
+<h1>Dashboard de Administração</h1>
+<a href="#">Adicionar Produto</a>
+<table>
+    <thead>
+        <tr>
+            <th class="col-1">Imagem</th>
+            <th class="col-1">Nome</th>
+            <th class="col-1">Preço</th>
+            <th class="col-1">Estoque</th>
+            <th class="col-1">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td class="pt-5"><img src="{{ product.image.url }}" alt="{{ item.product.name }}" width="100"></td>
+            <td class="pt-5">{{ product.name }}</td>
+            <td class="pt-5">{{ product.price }}</td>
+            <td class="pt-5">{{ product.stock_quantity}}</td>
+            <td class="pt-5">
+                <a href="#">Editar</a>
+                <a href="#">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 
 {% endblock %}
