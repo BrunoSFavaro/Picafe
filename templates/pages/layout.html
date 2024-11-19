@@ -31,7 +31,7 @@
             <div class="nav-btns">
                 <ul class="nav-links">
                     <li><a href="{% url 'view_cart' %}"><img src="{% static 'pages/images/CartIcon.png' %}" alt=""></a></li>
-                    <li><a href="">Dashboard</a></li>
+                    <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
                     <li><a href="{% url 'products' %}">Produtos</a></li>
                     {% if user.is_authenticated %}
                     <li class="dropdown">
