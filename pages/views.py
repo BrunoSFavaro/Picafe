@@ -18,8 +18,10 @@ def historic(request):
 
 def order_details(request, order_id):
     order = Order.objects.get(id=order_id)
+    products = Historic.objects.filter(order=order)
     return render(request, "pages/order.html", {
-        "order": order
+        "order": order,
+        "products": products,
     })
 
 def product(request, product_id):
