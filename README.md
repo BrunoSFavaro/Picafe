@@ -25,7 +25,6 @@ O Picafé é um projeto de e-commerce em desenvolvimento, com foco na venda de c
 ### Pré-requisitos
 - **Python** 3.7+
 - **pip** (gerenciador de pacotes do Python)
-- **Virtualenv** (recomendado para isolar o ambiente do projeto)
 - Para uso com PostgreSQL ou MySQL, instale também o driver apropriado.
 
 ### Passo a Passo
@@ -36,40 +35,66 @@ O Picafé é um projeto de e-commerce em desenvolvimento, com foco na venda de c
     cd picafe
     ```
 
-2. **Crie e ative um ambiente virtual**:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate   # Linux e macOS
-    venv\Scripts\activate      # Windows
-    ```
 
-3. **Instale as dependências**:
+2. **Instale as dependências**:
     ```bash
     pip install -r requirements.txt
     ```
 
-4. **Configuração do Banco de Dados**
-   - Para SQLite (padrão):
-     ```bash
-     python manage.py migrate
-     ```
+3. **Configuração do Banco de Dados**
 
-5. **Carregue dados de exemplo (opcional)**:
+O Picafé utiliza **MySQL** como banco de dados padrão. Siga os passos abaixo para configurar:
+
+- **Instale o MySQL Server**:  
+   Certifique-se de que o MySQL Server está instalado e rodando em sua máquina. Caso não esteja, siga as instruções do [MySQL](https://dev.mysql.com/downloads/installer/) para instalação.
+
+- **Crie o Banco de Dados**:  
+   Antes de executar as migrações, você precisa criar um banco de dados chamado `picafe` (ou escolha outro nome e configure em `settings.py`):
+   ```sql
+   CREATE DATABASE picafe CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+   ```
+
+- **Atualize as configurações no arquivo settings.py**
+    No diretório do projeto, localize o arquivo settings.py e edite a configuração do banco de dados:
+    ```python
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.mysql',
+           'NAME': 'picafe',  # Nome do banco de dados
+           'USER': 'seu_usuario',  # Substitua pelo seu usuário MySQL
+           'PASSWORD': 'sua_senha',  # Substitua pela sua senha MySQL
+           'HOST': 'localhost',  # Padrão é localhost
+           'PORT': '3306',  # Porta padrão do MySQL
+       }
+   }
+   ```
+
+- **Instale o driver MySQL para Django (caso ainda não tenha instalado):**
+    ```bash
+    pip install mysqlclient
+    ```
+
+- **Aplique as migrações:**
+    ```bash
+    python manage.py migrate
+    ```
+
+4. **Carregue dados de exemplo (opcional)**:
     ```bash
     python manage.py loaddata db.json
     ```
 
-6. **Crie um superusuário** (para acesso ao painel de administração):
+5. **Crie um superusuário** (para acesso ao painel de administração):
     ```bash
     python manage.py createsuperuser
     ```
 
-7. **Inicie o servidor de desenvolvimento**:
+6. **Inicie o servidor de desenvolvimento**:
     ```bash
     python manage.py runserver
     ```
 
-8. Acesse a aplicação no navegador em [http://localhost:8000](http://localhost:8000).
+7. Acesse a aplicação no navegador em [http://localhost:8000](http://localhost:8000).
 
 ---
 
