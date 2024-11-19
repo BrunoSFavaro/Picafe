@@ -123,14 +123,26 @@ def finalize_cart(request):
     order = Order.objects.create(user=request.user, total_price=total_price)
 
     for item in cart_items:
+        product = item.product
+        quantity = item.quantity
+
+        # Atualizar o estoque do produto
+        if product.stock_quantity >= quantity:
+            product.stock_quantity -= quantity
+            product.save()
+        else:
+            return render(request, 'pages/cart.html', {
+                'product': product
+            })
+
+        # Criar o histórico
         Historic.objects.create(
             order=order,
-            product=item.product,
-            quantity=item.quantity,
+            product=product,
+            quantity=quantity,
             date_added=item.date_added
         )
         item.delete()
-
     return render(request, 'pages/finalize.html', {
         'order': order
     })
