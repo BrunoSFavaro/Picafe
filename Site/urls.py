@@ -23,5 +23,6 @@ import User
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('User/', include("User.urls")),
-    path('pages/', include("pages.urls"))
+    path('pages/', include("pages.urls")),
+    path('superuser/', include("superuser.urls"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
