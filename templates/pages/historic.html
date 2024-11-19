@@ -10,7 +10,7 @@
                 <h2>Pedido #{{ order.id }}</h2>
                 <p><strong>Data:</strong> {{ order.created_at|date:"d/m/Y H:i" }}</p>
                 <p><strong>Valor Total:</strong> R$ {{ order.total_price|floatformat:2 }}</p>
-                <a class="details-btn" href="#">Mais detalhes</a>
+                <a class="details-btn" href="{% url 'order' order.id %}">Mais detalhes</a>
             </div>
             {% empty %}
             <p>Você ainda não fez nenhum pedido.</p>

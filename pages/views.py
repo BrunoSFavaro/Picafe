@@ -16,6 +16,12 @@ def historic(request):
         'orders': order_list
     })
 
+def order_details(request, order_id):
+    order = Order.objects.get(id=order_id)
+    return render(request, "pages/order.html", {
+        "order": order
+    })
+
 def product(request, product_id):
     product = Product.objects.get(id=product_id)
     return render(request, "pages/product.html", {
