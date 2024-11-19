@@ -10,6 +10,15 @@ html, body {
     flex-direction: column;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    color: inherit;
+}
+
 .logo {
     background-color: #733426;
 }

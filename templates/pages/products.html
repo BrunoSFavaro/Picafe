@@ -5,7 +5,7 @@
                 {% for product in products %}
                         <div class="featured-products">
                                 <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
-                                <a href="{% url 'product' product.id %}"><h3>{{ product.name }}</h3></a>
+                                <a href="{% url 'product' product.id %}"><h3 >{{ product.name }}</h3></a>
                                 <p>⭐⭐⭐⭐⭐</p>
                                 <p class="product-price">R${{ product.price }}</p>
                                 <a class="add-cart" href="{% url 'add_to_cart' product.id %}">Adicionar ao Carrinho</a>
