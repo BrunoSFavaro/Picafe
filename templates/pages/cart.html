@@ -3,6 +3,13 @@
 {% block body %}
 
     <h1>Carrinho de Compras</h1>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message {{ message.tags }} alert-danger">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     <div class="cart-items">
         {% for item in cart_items %}

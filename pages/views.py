@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from .models import Product, Cart, CartItem, Historic, Order
 from django.contrib.auth.decorators import login_required
@@ -62,23 +64,35 @@ def view_cart(request):
 def add_to_cart(request, product_id):
     if not request.user.is_authenticated:
         cart = request.session.get('cart', {})
-
         product_id_str = str(product_id)
-        if product_id_str in cart:
-            cart[product_id_str] += 1
-        else:
-            cart[product_id_str] = 1
+        product = Product.objects.get(id=product_id)
 
-        request.session['cart'] = cart
-        request.session.modified = True
+        if product.stock_quantity > cart.get(product_id_str, 0):
+            if product_id_str in cart:
+                cart[product_id_str] += 1
+            else:
+                cart[product_id_str] = 1
+            request.session['cart'] = cart
+            request.session.modified = True
+        else:
+            messages.error(request, f"Quantidade solicitada excede o estoque disponível para o produto {product.name}. Estoque disponível: {product.stock_quantity}")
+        
         return redirect('view_cart')
+
     else:
         product = Product.objects.get(id=product_id)
         cart_item, created = CartItem.objects.get_or_create(product=product, user=request.user)
-        cart_item.quantity += 1
-        cart_item.save()
-        return redirect('view_cart')
 
+        total_quantity_in_cart = cart_item.quantity + 1
+
+        if product.stock_quantity >= total_quantity_in_cart:
+            cart_item.quantity += 1
+            cart_item.save()
+        else:
+            messages.error(request, f"Quantidade solicitada excede o estoque disponível para o produto {product.name}. Estoque disponível: {product.stock_quantity}")
+        
+        return redirect('view_cart')
+    
 def subtract_from_cart(request, product_id):
     if request.user.is_authenticated:
         cart_item = CartItem.objects.filter(product_id=product_id, user=request.user).first()
@@ -126,7 +140,6 @@ def finalize_cart(request):
         product = item.product
         quantity = item.quantity
 
-        # Atualizar o estoque do produto
         if product.stock_quantity >= quantity:
             product.stock_quantity -= quantity
             product.save()
@@ -135,7 +148,6 @@ def finalize_cart(request):
                 'product': product
             })
 
-        # Criar o histórico
         Historic.objects.create(
             order=order,
             product=product,
