@@ -25,4 +25,18 @@ def add_product(request):
     return render(request, 'superuser/add_product.html', {
         'form': form
     })
-        
+
+@staff_member_required
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_dashboard')
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'superuser/edit_product.html', {
+        'form': form,
+        'product': product
+    })
