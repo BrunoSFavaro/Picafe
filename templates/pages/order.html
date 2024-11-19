@@ -21,11 +21,11 @@
     <tbody>
         {% for item in products %}
             <tr>
-                <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100"></td>
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>R$ {{ item.product.price }}</td>
-                <td>R$ {{ item.quantity|multiply:item.product.price|floatformat:2 }}</td>
+                <td class="col-1 pb-5"><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100"></td>
+                <td class="col-1">{{ item.product.name }}</td>
+                <td class="col-1">{{ item.quantity }}</td>
+                <td class="col-1">R$ {{ item.product.price }}</td>
+                <td class="col-1">R$ {{ item.quantity|multiply:item.product.price|floatformat:2 }}</td>
             </tr>
         {% endfor %}
     </tbody>
