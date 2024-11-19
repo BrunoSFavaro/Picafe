@@ -1,0 +1,13 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<h1>Adicionar Novo Produto</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Adicionar Produto</button>
+</form>
+
+{% endblock %}

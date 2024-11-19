@@ -3,7 +3,7 @@
 {% block body %}
 
 <h1>Dashboard de Administração</h1>
-<a href="#">Adicionar Produto</a>
+<a class="btn btn-primary m-3" href="#">Adicionar Produto</a>
 <table>
     <thead>
         <tr>
@@ -22,8 +22,8 @@
             <td class="pt-5">{{ product.price }}</td>
             <td class="pt-5">{{ product.stock_quantity}}</td>
             <td class="pt-5">
-                <a href="#">Editar</a>
-                <a href="#">Excluir</a>
+                <a class="btn btn-warning" href="#">Editar</a>
+                <a class="btn btn-danger" href="#">Excluir</a>
             </td>
         </tr>
         {% endfor %}
