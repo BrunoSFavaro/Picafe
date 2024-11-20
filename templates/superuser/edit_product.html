@@ -2,11 +2,38 @@
 
 {% block body %}
 
-<h1>Editar Produto: {{ product.name }}</h1>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Atualizar Produto</button>
-</form>
+<div class="container text-center">
+    <h2><a href="{% url 'admin_dashboard' %}" class="text-decoration-none">Voltar</a></h2>
+    <h1 class="mb-4">Editar Produto: {{ product.name }}</h1>
+    <div class="d-flex justify-content-center">
+        <form method="post" enctype="multipart/form-data" class="w-50">
+            {% csrf_token %}
+            <div class="mb-3 text-start">
+                <label for="id_name" class="form-label">Nome do Produto</label>
+                <input type="text" name="name" id="id_name" class="form-control" value="{{ form.name.value }}">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_description" class="form-label">Descrição</label>
+                <textarea name="description" id="id_description" class="form-control">{{ form.description.value }}</textarea>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_price" class="form-label">Preço</label>
+                <input type="number" name="price" id="id_price" class="form-control" value="{{ form.price.value }}">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_image" class="form-label">Imagem</label>
+                <input type="file" name="image" id="id_image" class="form-control">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_stock_quantity" class="form-label">Quantidade em Estoque</label>
+                <input type="number" name="stock_quantity" id="id_stock_quantity" class="form-control" value="{{ form.stock_quantity.value }}">
+            </div>
+            <button type="submit" class="btn btn-success w-100">Atualizar Produto</button>
+        </form>
+    </div>
+</div>
+
+
+
 
 {% endblock %}
