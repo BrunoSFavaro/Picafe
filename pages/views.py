@@ -33,10 +33,12 @@ def product(request, product_id):
     })
 
 def products(request):
-    list_products = Product.objects.all()
-    return render(request, "pages/products.html", {
-        'products': list_products
-    })
+    list_products = Product.objects.filter(stock_quantity__gt=0)
+    context = {
+        'products': list_products,
+        'empty_message': "Nenhum produto disponível no momento." if not list_products else None,
+    }
+    return render(request, "pages/products.html", context)
 
 def view_cart(request):
     total_price = 0
