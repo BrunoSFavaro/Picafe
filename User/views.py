@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Profile
+from .models import Profile, UserAddress
 
 # Create your views here.
 def index(request):
@@ -107,5 +107,33 @@ def edit_profile(request):
 
     return render(request, "User/edit_profile.html", {'user': request.user})
 
+def view_addresses(request):
+    addresses = UserAddress.objects.filter(user=request.user)
+
+    return render(request, "User/addresses.html", {
+        "addresses": addresses
+    })
+
 def add_address(request):
+    if request.method == "POST":
+        street = request.POST.get("street")
+        city = request.POST.get("city")
+        state = request.POST.get("state")
+        cep = request.POST.get("cep")
+        country = request.POST.get("country")
+        is_default = request.POST.get("is_default") == "on"
+
+        UserAddress.objects.create(
+            user=request.user,
+            street=street,
+            city=city,
+            state=state,
+            cep=cep,
+            country=country,
+            is_default=is_default,
+        )
+
+        messages.success(request, "Endereço adicionado com sucesso!")
+        return redirect('profile')
+
     return render(request, "User/add_address.html")

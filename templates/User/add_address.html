@@ -2,6 +2,40 @@
 
 {% block body %}
 
+<div class="container text-center mt-4">
+    <h2><a href="{% url 'profile' %}" class="text-decoration-none">Voltar</a></h2>
+    <h1 class="mb-4">Adicionar Endereço</h1>
+    <div class="d-flex justify-content-center">
+        <form method="post" class="w-50">
+            {% csrf_token %}
+            <div class="mb-3 text-start">
+                <label for="id_street" class="form-label">Endereço</label>
+                <input type="text" name="street" id="id_street" class="form-control" placeholder="Ex: Rua das Flores, 123" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_city" class="form-label">Cidade</label>
+                <input type="text" name="city" id="id_city" class="form-control" placeholder="Ex: São Paulo" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_state" class="form-label">Estado</label>
+                <input type="text" name="state" id="id_state" class="form-control" placeholder="Ex: SP" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_cep" class="form-label">CEP</label>
+                <input type="text" name="cep" id="id_cep" class="form-control" placeholder="Ex: 12345-678" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_country" class="form-label">País</label>
+                <input type="text" name="country" id="id_country" class="form-control" placeholder="Ex: Brasil" required>
+            </div>
+            <div class="form-check mb-3 text-start">
+                <input type="checkbox" name="is_default" id="id_is_default" class="form-check-input">
+                <label for="id_is_default" class="form-check-label">Definir como endereço principal</label>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Salvar Endereço</button>
+        </form>
+    </div>
+</div>
 
 
 {% endblock %}
