@@ -15,7 +15,7 @@ O Picafé é um projeto de e-commerce em desenvolvimento, com foco na venda de c
 ## Tecnologias Utilizadas
 - **Linguagem**: Python
 - **Framework**: Django
-- **Banco de Dados**: SQL
+- **Banco de Dados**: MySQL
 - **Front-end**: HTML, CSS, Bootstrap (para estilização básica)
 
 ---
@@ -31,7 +31,7 @@ O Picafé é um projeto de e-commerce em desenvolvimento, com foco na venda de c
 
 1. **Clone o repositório**:
     ```bash
-    git clone https://github.com/seu-usuario/picafe.git
+    git clone https://github.com/BrunoSFavaro/picafe.git
     cd picafe
     ```
 
@@ -69,7 +69,7 @@ O Picafé utiliza **MySQL** como banco de dados padrão. Siga os passos abaixo p
    }
    ```
 
-- **Instale o driver MySQL para Django (caso ainda não tenha instalado):**
+- **Instale o driver MySQL para Django caso ainda não tenha feito (já incluso no requirements.txt):**
     ```bash
     pip install mysqlclient
     ```
@@ -104,6 +104,7 @@ O Picafé utiliza **MySQL** como banco de dados padrão. Siga os passos abaixo p
 - `user/`: App para funcionalidades de cadastro e login de usuários.
 - `media/products`: Armazena imagens dos produtos cadastrados no banco de dados.
 - `static/`: Arquivos estáticos, como CSS e JavaScript, para estilização e interatividade.
+- `superuser/`: Funcionalidades para o administrador da loja.
 
 ---
 
