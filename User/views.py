@@ -42,11 +42,16 @@ def logout_view(request):
 def signup(request):
     if request.method == "POST":
         username = request.POST["username"]
+        first_name = request.POST['first']
+        last_name = request.POST['last']
         password = request.POST["password"]
         email = request.POST["email"]
 
         # Creating a new user
         user = AuthUser.objects.create_user(username=username, password=password, email=email)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
 
         # Authenticate and login the user automatically after the sign up
         login(request, user)

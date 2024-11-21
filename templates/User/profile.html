@@ -22,46 +22,58 @@
         <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
             <!-- Cartões -->
             <div class="col">
-                <div class="shortcut-card p-3 rounded text-center">
-                    <i class="bi bi-bag-fill fs-1 text-danger"></i>
-                    <h5 class="mt-3">Meus Pedidos</h5>
-                    <p class="text-muted">Veja históricos e acompanhe suas compras.</p>
-                </div>
+                <a href="{% url 'historic' %}">
+                    <div class="shortcut-card p-3 rounded text-center">
+                        <i class="bi bi-bag-fill fs-1 text-danger"></i>
+                        <h5 class="mt-3">Meus Pedidos</h5>
+                        <p class="text-muted">Veja históricos e acompanhe suas compras.</p>
+                    </div>
+                </a>
             </div>
             <div class="col">
-                <div class="shortcut-card p-3 rounded text-center">
-                    <i class="bi bi-geo-alt-fill fs-1 text-danger"></i>
-                    <h5 class="mt-3">Meus Endereços</h5>
-                    <p class="text-muted">Gerencie e escolha endereços para entrega.</p>
-                </div>
+                <a href="#">
+                    <div class="shortcut-card p-3 rounded text-center">
+                        <i class="bi bi-geo-alt-fill fs-1 text-danger"></i>
+                        <h5 class="mt-3">Meus Endereços</h5>
+                        <p class="text-muted">Gerencie e escolha endereços para entrega.</p>
+                    </div>
+                </a>
             </div>
             <div class="col">
-                <div class="shortcut-card p-3 rounded text-center">
-                    <i class="bi bi-credit-card-2-back-fill fs-1 text-danger"></i>
-                    <h5 class="mt-3">Meus Pagamentos</h5>
-                    <p class="text-muted">Adicione ou remova formas de pagamento.</p>
-                </div>
+                <a href="#">
+                    <div class="shortcut-card p-3 rounded text-center">
+                        <i class="bi bi-credit-card-2-back-fill fs-1 text-danger"></i>
+                        <h5 class="mt-3">Meus Pagamentos</h5>
+                        <p class="text-muted">Adicione ou remova formas de pagamento.</p>
+                    </div>
+                </a>
             </div>
             <div class="col">
-                <div class="shortcut-card p-3 rounded text-center">
-                    <i class="bi bi-heart-fill fs-1 text-danger"></i>
-                    <h5 class="mt-3">Minha Lista de Desejos</h5>
-                    <p class="text-muted">Salve os produtos que você mais gosta.</p>
-                </div>
+                <a href="#">
+                    <div class="shortcut-card p-3 rounded text-center">
+                        <i class="bi bi-heart-fill fs-1 text-danger"></i>
+                        <h5 class="mt-3">Minha Lista de Desejos</h5>
+                        <p class="text-muted">Salve os produtos que você mais gosta.</p>
+                    </div>
+                </a>
             </div>
             <div class="col">
-                <div class="shortcut-card p-3 rounded text-center">
-                    <i class="bi bi-chat-left-dots-fill fs-1 text-danger"></i>
-                    <h5 class="mt-3">Minhas Avaliações</h5>
-                    <p class="text-muted">Veja e edite suas avaliações de produtos.</p>
-                </div>
+                <a href="#">
+                    <div class="shortcut-card p-3 rounded text-center">
+                        <i class="bi bi-chat-left-dots-fill fs-1 text-danger"></i>
+                        <h5 class="mt-3">Minhas Avaliações</h5>
+                        <p class="text-muted">Veja e edite suas avaliações de produtos.</p>
+                    </div>
+                </a>
             </div>
             <div class="col">
-                <div class="shortcut-card p-3 rounded text-center">
-                    <i class="bi bi-box-arrow-right fs-1 text-danger"></i>
-                    <h5 class="mt-3">Sair</h5>
-                    <p class="text-muted">Encerrar sessão.</p>
-                </div>
+                <a href="{% url 'logout' %}">
+                    <div class="shortcut-card p-3 rounded text-center">
+                        <i class="bi bi-box-arrow-right fs-1 text-danger"></i>
+                        <h5 class="mt-3">Sair</h5>
+                        <p class="text-muted">Encerrar sessão.</p>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
