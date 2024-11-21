@@ -1,0 +1,46 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<div class="container text-center">
+    <h2><a href="{% url 'profile' %}" class="text-decoration-none">Voltar</a></h2>
+    <h1 class="mb-4">Editar Perfil</h1>
+    <div class="d-flex justify-content-center">
+        <form method="post" enctype="multipart/form-data" class="w-50">
+            {% csrf_token %}
+            <div class="mb-3 text-start">
+                <label for="id_first_name" class="form-label">Primeiro Nome</label>
+                <input type="text" name="first_name" id="id_first_name" class="form-control" value="{{ user.first_name }}">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_last_name" class="form-label">Último Nome</label>
+                <input type="text" name="last_name" id="id_last_name" class="form-control" value="{{ user.last_name }}">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_email" class="form-label">Email</label>
+                <input type="email" name="email" id="id_email" class="form-control" value="{{ user.email }}">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_password" class="form-label">Nova Senha (opcional)</label>
+                <input type="password" name="password" id="id_password" class="form-control" placeholder="Digite uma nova senha, se desejar">
+            </div>
+            
+            <div class="mb-3 text-start">
+                <label for="id_profile_image" class="form-label">Imagem de Perfil</label>
+                <input type="file" name="profile_image" id="id_profile_image" class="form-control">
+            </div>
+            
+            <!-- Exibindo a imagem de perfil atual (se houver) -->
+            {% if user.profile.profile_image %}
+                <div class="mb-3 text-start">
+                    <label class="form-label">Imagem Atual</label>
+                    <img src="{{ user.profile.profile_image.url }}" alt="Imagem de Perfil" class="img-thumbnail" style="max-width: 200px;">
+                </div>
+            {% endif %}
+            
+            <button type="submit" class="btn btn-success w-100">Atualizar Perfil</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

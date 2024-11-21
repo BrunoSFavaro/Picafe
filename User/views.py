@@ -1,10 +1,13 @@
 from django.contrib.auth.models import User as AuthUser  # Renomeie o modelo User para AuthUser
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from .models import Profile
 
 import User
 
@@ -62,3 +65,47 @@ def signup(request):
 @login_required
 def profile(request):
     return render(request, "User/profile.html")
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        # Obtendo os dados do formulário
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        profile_image = request.FILES.get('profile_image')  # Aqui pegamos a imagem enviada
+
+        user = request.user  # Usuário autenticado
+
+        # Atualizando as informações básicas do usuário
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+
+        # Se houver nova senha, ela será atualizada
+        if password:
+            user.set_password(password)  # Criptografa a senha antes de salvar
+
+        # Tentando obter o perfil do usuário
+        try:
+            profile = user.profile
+        except ObjectDoesNotExist:
+            profile = Profile(user=user)
+
+        # Se uma nova imagem de perfil for enviada, atualiza o campo
+        if profile_image:
+            profile.profile_image = profile_image
+
+        # Salvando as alterações no perfil e no usuário
+        profile.save()
+        user.save()
+
+        # Se a senha foi alterada, atualiza a sessão para não desconectar o usuário
+        if password:
+            update_session_auth_hash(request, user)
+
+        messages.success(request, 'Perfil atualizado com sucesso!')
+        return redirect('profile')  # Redireciona para a página do perfil
+
+    return render(request, "User/edit_profile.html", {'user': request.user})

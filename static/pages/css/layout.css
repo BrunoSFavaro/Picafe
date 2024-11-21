@@ -326,6 +326,7 @@ main {
 .profile-header {
     background-color: #EBBB92;
     border: 1px solid #fab57a;
+    border-radius: 3rem;
 }
 
 .profile-icon {
@@ -334,6 +335,7 @@ main {
 
 .shortcut-card {
     background-color: #EBBB92;
+    border-radius: 3rem;
     border: 1px solid #fab57a;
     transition: transform 0.3s;
 }

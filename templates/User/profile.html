@@ -6,15 +6,20 @@
     <div class="profile-header d-flex align-items-center justify-content-between p-4 rounded">
         <div class="d-flex align-items-center">
             <div class="profile-icon bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
-                <i class="bi bi-person-fill text-white fs-3"></i>
+                {% if user.profile.profile_image %}
+                    <img src="{{ user.profile.profile_image.url }}" alt="Imagem de Perfil" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                {% else %}
+                    <i class="bi bi-person-fill text-white fs-3"></i>
+                {% endif %}
             </div>
             <div>
                 <h2 class="m-0">Bem vindo, {{ user.username }}</h2>
                 <p class="text-muted m-0"><i class="bi bi-envelope"></i> {{ user.email }}</p>
             </div>
         </div>
-        <a href="#" class="btn btn-danger"><i class="bi bi-pencil"></i> Editar Dados</a>
+        <a href="{% url 'edit_profile' %}" class="btn btn-danger"><i class="bi bi-pencil"></i> Editar Dados</a>
     </div>
+
 
     <!-- Atalhos -->
     <div class="profile-shortcuts mt-5">
