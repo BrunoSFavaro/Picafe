@@ -1,15 +1,12 @@
-from django.contrib.auth.models import User as AuthUser  # Renomeie o modelo User para AuthUser
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.models import User as AuthUser  # Renomeie o modelo User para AuthUser
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Profile
-
-import User
 
 # Create your views here.
 def index(request):
@@ -109,3 +106,6 @@ def edit_profile(request):
         return redirect('profile')  # Redireciona para a página do perfil
 
     return render(request, "User/edit_profile.html", {'user': request.user})
+
+def add_address(request):
+    return render(request, "User/add_address.html")

@@ -1,6 +1,16 @@
 {% extends "pages/layout.html" %}
 
 {% block body %}
+{% if messages %}
+    <ul class="messages list-unstyled d-flex flex-column align-items-center">
+        {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} w-50 text-center rounded-pill py-2">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <div class="profile-container container mt-4">
     <!-- Cabeçalho do perfil -->
     <div class="profile-header d-flex align-items-center justify-content-between p-4 rounded">
@@ -36,7 +46,7 @@
                 </a>
             </div>
             <div class="col">
-                <a href="#">
+                <a href="{% url 'add_address' %}">
                     <div class="shortcut-card p-3 rounded text-center">
                         <i class="bi bi-geo-alt-fill fs-1 text-danger"></i>
                         <h5 class="mt-3">Meus Endereços</h5>
