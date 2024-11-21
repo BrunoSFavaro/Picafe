@@ -318,6 +318,31 @@ main {
     filter: brightness(80%);
 }
 
+.form-control {
+    opacity: .56;
+}
+
+/* Profile options */
+.profile-header {
+    background-color: #EBBB92;
+    border: 1px solid #fab57a;
+}
+
+.profile-icon {
+    background-color: #d98668;
+}
+
+.shortcut-card {
+    background-color: #EBBB92;
+    border: 1px solid #fab57a;
+    transition: transform 0.3s;
+}
+
+.shortcut-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* Footer */
 footer {
     background-color: #733426;

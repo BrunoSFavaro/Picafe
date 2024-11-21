@@ -1,8 +1,69 @@
 {% extends "pages/layout.html" %}
 
 {% block body %}
+<div class="profile-container container mt-4">
+    <!-- Cabeçalho do perfil -->
+    <div class="profile-header d-flex align-items-center justify-content-between p-4 rounded">
+        <div class="d-flex align-items-center">
+            <div class="profile-icon bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                <i class="bi bi-person-fill text-white fs-3"></i>
+            </div>
+            <div>
+                <h2 class="m-0">Bem vindo, {{ user.username }}</h2>
+                <p class="text-muted m-0"><i class="bi bi-envelope"></i> {{ user.email }}</p>
+            </div>
+        </div>
+        <a href="#" class="btn btn-danger"><i class="bi bi-pencil"></i> Editar Dados</a>
+    </div>
 
-    <h1>Tá logado doidão</h1>
-    <a href="{% url 'logout' %}">Sair da conta</a>
-
+    <!-- Atalhos -->
+    <div class="profile-shortcuts mt-5">
+        <h3 class=""><i class="bi bi-dash-circle"></i> Atalhos</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+            <!-- Cartões -->
+            <div class="col">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-bag-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Meus Pedidos</h5>
+                    <p class="text-muted">Veja históricos e acompanhe suas compras.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-geo-alt-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Meus Endereços</h5>
+                    <p class="text-muted">Gerencie e escolha endereços para entrega.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-credit-card-2-back-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Meus Pagamentos</h5>
+                    <p class="text-muted">Adicione ou remova formas de pagamento.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-heart-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Minha Lista de Desejos</h5>
+                    <p class="text-muted">Salve os produtos que você mais gosta.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-chat-left-dots-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Minhas Avaliações</h5>
+                    <p class="text-muted">Veja e edite suas avaliações de produtos.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-box-arrow-right fs-1 text-danger"></i>
+                    <h5 class="mt-3">Sair</h5>
+                    <p class="text-muted">Encerrar sessão.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
