@@ -152,3 +152,8 @@ def edit_address(request, address_id):
         'form': form,
         'address': address
     })
+
+def delete_address(request, address_id):
+    address = get_object_or_404(UserAddress, id=address_id)
+    address.delete()
+    return redirect('view_addresses')
