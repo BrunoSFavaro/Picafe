@@ -3,10 +3,11 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User as AuthUser  # Renomeie o modelo User para AuthUser
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Profile, UserAddress
+from .forms import AddressForm
 
 # Create your views here.
 def index(request):
@@ -137,3 +138,17 @@ def add_address(request):
         return redirect('profile')
 
     return render(request, "User/add_address.html")
+
+def edit_address(request, address_id):
+    address = get_object_or_404(UserAddress, id=address_id)
+    if request.method == 'POST':
+        form = AddressForm(request.POST, request.FILES, instance=address)
+        if form.is_valid():
+            form.save()
+            return redirect('view_addresses')
+    else:
+        form = AddressForm(instance=address)
+    return render(request, 'User/edit_address.html', {
+        'form': form,
+        'address': address
+    })
