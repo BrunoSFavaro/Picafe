@@ -4,9 +4,11 @@
 
     <h1>Carrinho de Compras</h1>
     {% if messages %}
-        <ul class="messages">
+        <ul class="messages list-unstyled d-flex flex-column align-items-center">
             {% for message in messages %}
-                <li class="message {{ message.tags }} alert-danger">{{ message }}</li>
+                <li class="alert alert-{{ message.tags }} w-70 text-center rounded-pill py-2">
+                    {{ message }}
+                </li>
             {% endfor %}
         </ul>
     {% endif %}

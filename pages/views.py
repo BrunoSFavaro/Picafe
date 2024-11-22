@@ -78,7 +78,7 @@ def add_to_cart(request, product_id):
             request.session.modified = True
         else:
             messages.error(request, f"Quantidade solicitada excede o estoque disponível para o produto {product.name}. Estoque disponível: {product.stock_quantity}")
-        
+            
         return redirect('view_cart')
 
     else:

@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from django.contrib.messages import constants as message_constants
+
+MESSAGE_TAGS = {
+    message_constants.ERROR: 'danger',  # Mapeia 'error' para 'danger'
+}
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
