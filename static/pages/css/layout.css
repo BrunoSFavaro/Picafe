@@ -333,6 +333,18 @@ main {
     background-color: #d98668;
 }
 
+.edit-profile-btn {
+    color: white;
+    background-color: #A62424;
+    transition: 0.3s ease-in-out;
+}
+
+.edit-profile-btn:hover {
+    color: white;
+    filter: brightness(80%);
+}
+
+
 .shortcut-card {
     background-color: #EBBB92;
     border-radius: 3rem;
