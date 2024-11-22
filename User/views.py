@@ -135,7 +135,7 @@ def add_address(request):
         )
 
         messages.success(request, "Endereço adicionado com sucesso!")
-        return redirect('profile')
+        return redirect('view_addresses')
 
     return render(request, "User/add_address.html")
 
