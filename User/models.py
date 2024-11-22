@@ -18,6 +18,11 @@ class UserAddress(models.Model):
     street = models.CharField(max_length=255)
     is_default = models.BooleanField(default=False)
 
+    def save(self, *args, **kwargs):
+        if self.is_default:
+            UserAddress.objects.filter(user=self.user, is_default=True).update(is_default=False)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.user.username} - {self.street}, {self.city}"
     
