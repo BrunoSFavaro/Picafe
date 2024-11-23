@@ -30,8 +30,8 @@ class UserPayments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="payments")
     payment_type = models.CharField(
         max_length=50,
-        choices=[('Credit Card', 'Cartão de Crédito'), ('Debit Card', 'Cartão de Débito'), ('Pix', 'Pix')],
-        default='Credit Card',
+        choices=[('Cartão de Crédito', 'Cartão de Crédito'), ('Debit Card', 'Cartão de Débito')],
+        default='Cartão de Crédito',
     )
     card_holder_name = models.CharField(max_length=100, blank=True, null=True)
     card_number = models.CharField(max_length=20, blank=True, null=True)

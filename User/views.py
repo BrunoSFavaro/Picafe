@@ -5,9 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from .models import Profile, UserAddress, UserPayments
 from .forms import AddressForm
+from datetime import datetime
 
 # Create your views here.
 def index(request):
@@ -164,3 +165,49 @@ def view_payments(request):
     return render(request, "User/payments.html", {
         "payments": payments
     })
+
+
+def add_payment(request):
+    if request.method == "POST":
+        payment_type = request.POST.get("payment_type")
+        card_holder_name = request.POST.get("card_holder_name")
+        card_number = request.POST.get("card_number")
+        expiration_date = request.POST.get("expiration_date")
+        cvv = request.POST.get("cvv")
+        is_default = request.POST.get("is_default") == "on"
+
+        # Validação de Expiração de Cartão
+        try:
+            expiration_date = datetime.strptime(expiration_date, "%m/%Y")
+            if expiration_date < datetime.now():
+                messages.error(request, "O cartão está expirado.")
+                return render(request, "User/add_payment.html")
+        except ValueError:
+            messages.error(request, "Formato de data de expiração inválido.")
+            return render(request, "User/add_payment.html")
+
+        # Validação do CVV (não deve ser armazenado)
+        if len(cvv) != 3:  # Validação básica para o CVV
+            messages.error(request, "CVV inválido.")
+            return render(request, "User/add_payment.html")
+
+        # Verificar se outro método já está marcado como padrão
+        if is_default:
+            # Desmarcar o padrão dos outros métodos do usuário
+            UserPayments.objects.filter(user=request.user, is_default=True).update(is_default=False)
+
+        # Criando o pagamento
+        UserPayments.objects.create(
+            user=request.user,
+            payment_type=payment_type,
+            card_holder_name=card_holder_name,
+            card_number=card_number[-4:],  # Armazenar apenas os últimos 4 dígitos
+            expiration_date=expiration_date,
+            cvv=cvv,  # Não recomendável salvar CVV em um ambiente real
+            is_default=is_default
+        )
+
+        messages.success(request, "Método de pagamento adicionado com sucesso!")
+        return redirect('payments')
+
+    return render(request, "User/add_payment.html")

@@ -2,6 +2,58 @@
 
 {% block body %}
 
+<div class="container mt-5">
+    <h1 class="text-center">Meus Métodos de Pagamento</h1>
+
+    <!-- Mensagens de sucesso ou erro -->
+    {% if messages %}
+        <ul class="messages list-unstyled text-center">
+            {% for message in messages %}
+                <li class="alert alert-{{ message.tags }} d-inline-block w-50 mx-auto">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Listagem de métodos de pagamento -->
+    <div class="payment-card card shadow p-4 mt-4">
+        <h2 class="mb-3">Métodos Cadastrados</h2>
+
+        {% if payments.exists %}
+            <ul class="list-group">
+                {% for payment in payments %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center card-box">
+                        <div>
+                            <h5>{{ payment.payment_type }}</h5>
+                            {% if payment.card_holder_name %}
+                                <p><strong>Nome no cartão:</strong> {{ payment.card_holder_name }}</p>
+                                <p><strong>Número:</strong> **** **** **** {{ payment.card_number|slice:"-4:" }}</p>
+                                <p><strong>Validade:</strong> {{ payment.expiration_date|date:"m/Y" }}</p>
+                            {% elif payment.pix_key %}
+                                <p><strong>Chave PIX:</strong> {{ payment.pix_key }}</p>
+                            {% endif %}
+                            {% if payment.is_default %}
+                                <span class="badge bg-success">Padrão</span>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <a href="#" class="btn btn-sm btn-primary">Editar</a>
+                            <a href="#" class="btn btn-sm btn-danger">Excluir</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">Nenhum método de pagamento cadastrado.</p>
+        {% endif %}
+    </div>
+
+    <!-- Botão para adicionar novo método -->
+    <div class="text-center mt-4">
+        <a href="{% url 'add_payment' %}" class="btn btn-success">Adicionar Novo Método</a>
+    </div>
+</div>
 
 
 {% endblock %}
