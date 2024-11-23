@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from .models import Profile, UserAddress, UserPayments
-from .forms import AddressForm
+from .forms import AddressForm, PaymentForm
 from datetime import datetime
 
 # Create your views here.
@@ -173,7 +173,6 @@ def add_payment(request):
         card_holder_name = request.POST.get("card_holder_name")
         card_number = request.POST.get("card_number")
         expiration_date = request.POST.get("expiration_date")
-        cvv = request.POST.get("cvv")
         is_default = request.POST.get("is_default") == "on"
 
         # Validação de Expiração de Cartão
@@ -186,11 +185,6 @@ def add_payment(request):
             messages.error(request, "Formato de data de expiração inválido.")
             return render(request, "User/add_payment.html")
 
-        # Validação do CVV (não deve ser armazenado)
-        if len(cvv) != 3:  # Validação básica para o CVV
-            messages.error(request, "CVV inválido.")
-            return render(request, "User/add_payment.html")
-
         # Verificar se outro método já está marcado como padrão
         if is_default:
             # Desmarcar o padrão dos outros métodos do usuário
@@ -201,9 +195,8 @@ def add_payment(request):
             user=request.user,
             payment_type=payment_type,
             card_holder_name=card_holder_name,
-            card_number=card_number[-4:],  # Armazenar apenas os últimos 4 dígitos
+            card_number=card_number,  
             expiration_date=expiration_date,
-            cvv=cvv,  # Não recomendável salvar CVV em um ambiente real
             is_default=is_default
         )
 
@@ -211,3 +204,45 @@ def add_payment(request):
         return redirect('payments')
 
     return render(request, "User/add_payment.html")
+
+def edit_payment(request, payment_id):
+    payment = get_object_or_404(UserPayments, id=payment_id, user=request.user)
+
+    if request.method == "POST":
+        payment_type = request.POST.get("payment_type")
+        card_holder_name = request.POST.get("card_holder_name")
+        card_number = request.POST.get("card_number")
+        expiration_date = request.POST.get("expiration_date")
+        is_default = request.POST.get("is_default") == "on"
+
+        # Validação de Expiração de Cartão
+        try:
+            expiration_date = datetime.strptime(expiration_date, "%m/%Y")
+            if expiration_date < datetime.now():
+                messages.error(request, "O cartão está expirado.")
+                return render(request, "User/edit_payment.html", {'payment': payment})
+        except ValueError:
+            messages.error(request, "Formato de data de expiração inválido.")
+            return render(request, "User/edit_payment.html", {'payment': payment})
+
+
+        # Verificar se outro método já está marcado como padrão
+        if is_default:
+            UserPayments.objects.filter(user=request.user, is_default=True).update(is_default=False)
+
+        # Atualizando o método de pagamento
+        payment.payment_type = payment_type
+        payment.card_holder_name = card_holder_name
+        payment.card_number = card_number
+        payment.expiration_date = expiration_date
+        payment.is_default = is_default
+        payment.save()
+
+        messages.success(request, "Método de pagamento atualizado com sucesso!")
+        return redirect('payments')
+
+    # Pré-preenchendo os dados no formulário
+    return render(request, "User/edit_payment.html", {
+        'payment': payment,
+    })
+

@@ -361,6 +361,12 @@ main {
     background-color: #EBBB92;
 }
 
+.list-group .list-group-item {
+    border: none; 
+    border-radius: 0.6rem;
+    margin-bottom: 10px; 
+}
+
 .card-box {
     background-color: white;
     filter: opacity(60%);

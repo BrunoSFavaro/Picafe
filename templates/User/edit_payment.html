@@ -1,0 +1,58 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <h2>Editar Método de Pagamento</h2>
+
+    {% if messages %}
+    <div class="alert-container">
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} w-50 mx-auto">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <form method="post" class="w-50 mx-auto" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="payment_type" class="form-label">Tipo de Pagamento</label>
+            <select class="form-control" name="payment_type" id="payment_type" required>
+                <option value="Cartão de Crédito" {% if payment.payment_type == "Cartão de Crédito" %}selected{% endif %}>Cartão de Crédito</option>
+                <option value="Cartão de Débito" {% if payment.payment_type == "Cartão de Débito" %}selected{% endif %}>Cartão de Débito</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="card_holder_name" class="form-label">Nome do Titular</label>
+            <input type="text" class="form-control" id="card_holder_name" name="card_holder_name" 
+                   value="{{ payment.card_holder_name }}" placeholder="Nome como aparece no cartão" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="card_number" class="form-label">Número do Cartão</label>
+            <input type="text" class="form-control" id="card_number" name="card_number" 
+                   value="{{ payment.card_number }}" placeholder="Número do cartão" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="expiration_date" class="form-label">Data de Expiração</label>
+            <input type="text" class="form-control" id="expiration_date" name="expiration_date" 
+                   value="{{ payment.expiration_date|date:'m/Y' }}" placeholder="MM/AAAA" required pattern="^(0[1-9]|1[0-2])\/([0-9]{4})$" title="Digite a data no formato MM/AAAA">
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="is_default" name="is_default" 
+                   {% if payment.is_default %}checked{% endif %}>
+            <label class="form-check-label" for="is_default">Definir como padrão</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Atualizar Método de Pagamento</button>
+    </form>
+</div>
+
+
+{% endblock %}

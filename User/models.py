@@ -30,13 +30,12 @@ class UserPayments(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="payments")
     payment_type = models.CharField(
         max_length=50,
-        choices=[('Cartão de Crédito', 'Cartão de Crédito'), ('Debit Card', 'Cartão de Débito')],
+        choices=[('Cartão de Crédito', 'Cartão de Crédito'), ('Cartão de Débito', 'Cartão de Débito')],
         default='Cartão de Crédito',
     )
     card_holder_name = models.CharField(max_length=100, blank=True, null=True)
     card_number = models.CharField(max_length=20, blank=True, null=True)
     expiration_date = models.DateField(blank=True, null=True)
-    cvv = models.CharField(max_length=4, blank=True, null=True)
     is_default = models.BooleanField(default=False)  # Define como método principal
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
