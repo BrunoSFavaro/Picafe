@@ -23,7 +23,7 @@
                 {% endif %}
             </div>
             <div>
-                <h2 class="m-0">Bem vindo, {{ user.username }}</h2>
+                <h2 class="m-0">Bem vindo, {{ user.first_name }}</h2>
                 <p class="text-muted m-0"><i class="bi bi-envelope"></i> {{ user.email }}</p>
             </div>
         </div>
@@ -55,7 +55,7 @@
                 </a>
             </div>
             <div class="col">
-                <a href="#">
+                <a href="{% url 'payments' %}">
                     <div class="shortcut-card p-3 rounded text-center">
                         <i class="bi bi-credit-card-2-back-fill fs-1 text-danger"></i>
                         <h5 class="mt-3">Meus Pagamentos</h5>

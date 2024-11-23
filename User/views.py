@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Profile, UserAddress
+from .models import Profile, UserAddress, UserPayments
 from .forms import AddressForm
 
 # Create your views here.
@@ -157,3 +157,10 @@ def delete_address(request, address_id):
     address = get_object_or_404(UserAddress, id=address_id)
     address.delete()
     return redirect('view_addresses')
+
+def view_payments(request):
+    payments = UserPayments.objects.filter(user=request.user)
+
+    return render(request, "User/payments.html", {
+        "payments": payments
+    })
