@@ -180,3 +180,8 @@ def add_wishlist(request, product_id):
 
     return redirect('wishlist')
     
+@login_required
+def remove_from_wishlist(request, product_id):
+    wishlist_item = Wishlist.objects.get(id=product_id, user=request.user)
+    wishlist_item.delete()
+    return redirect('wishlist')
