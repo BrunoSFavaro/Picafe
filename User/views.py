@@ -246,3 +246,7 @@ def edit_payment(request, payment_id):
         'payment': payment,
     })
 
+def delete_payment(request, payment_id):
+    payment = get_object_or_404(UserPayments, id=payment_id)
+    payment.delete()
+    return redirect('payments')

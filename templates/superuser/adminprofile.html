@@ -1,0 +1,77 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+{% if messages %}
+<ul class="messages list-unstyled d-flex flex-column align-items-center">
+    {% for message in messages %}
+        <li class="alert alert-{{ message.tags }} w-50 text-center rounded-pill py-2">
+            {{ message }}
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<!-- Atalhos -->
+<div class="profile-shortcuts mt-5">
+    <h3 class=""><i class="bi bi-dash-circle"></i> Atalhos</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        <!-- Cartões -->
+        <div class="col">
+            <a href="{% url 'admin_dashboard' %}">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-bag-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Gerenciar Produtos</h5>
+                    <p class="text-muted">Adicione, edite ou remova produtos do catálogo de vendas.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="#">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-geo-alt-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Gerenciar Pedidos</h5>
+                    <p class="text-muted">Veja e gerencie pedidos realizados pelos clientes.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="#">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-credit-card-2-back-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Usuários</h5>
+                    <p class="text-muted">Acompanhe os registros, edite permissões ou desative contas de usuários.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="#">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-heart-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Relatórios</h5>
+                    <p class="text-muted">Visualize estatísticas de vendas, estoque e desempenho.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="#">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-chat-left-dots-fill fs-1 text-danger"></i>
+                    <h5 class="mt-3">Cupons de Desconto</h5>
+                    <p class="text-muted">Crie, edite ou remova cupons promocionais.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="{% url 'logout' %}">
+                <div class="shortcut-card p-3 rounded text-center">
+                    <i class="bi bi-box-arrow-right fs-1 text-danger"></i>
+                    <h5 class="mt-3">Sair</h5>
+                    <p class="text-muted">Encerrar sessão.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

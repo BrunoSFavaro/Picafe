@@ -7,6 +7,10 @@ from .forms import ProductForm
 # Create your views here.
 
 @staff_member_required
+def admin_profile(request):
+    return render(request, "superuser/adminprofile.html")
+
+@staff_member_required
 def admin_dashboard(request):
     products = Product.objects.all()
     return render(request, 'superuser/dashboard.html', {
