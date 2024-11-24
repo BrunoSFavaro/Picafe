@@ -182,6 +182,6 @@ def add_wishlist(request, product_id):
     
 @login_required
 def remove_from_wishlist(request, product_id):
-    wishlist_item = Wishlist.objects.get(id=product_id, user=request.user)
+    wishlist_item = Wishlist.objects.get(product_id=product_id, user=request.user)
     wishlist_item.delete()
     return redirect('wishlist')
