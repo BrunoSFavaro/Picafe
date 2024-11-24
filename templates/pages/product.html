@@ -11,7 +11,14 @@
         <p class="product-price">R$ {{ product.price }}</p>
 
         {% if product.stock_quantity > 0 %}
-            <a class="add-cart-product" href="{% url 'add_to_cart' product.id %}">Adicionar ao Carrinho</a>
+            <div class="action-buttons">
+                <a class="add-cart-product btn btn-primary" href="{% url 'add_to_cart' product.id %}">
+                    Adicionar ao Carrinho
+                </a>
+                <a class="add-wishlist-product btn btn-outline-danger" href="{% url 'add_wishlist' product.id %}">
+                    Adicionar à Wishlist
+                </a>
+            </div>
         {% else %}
             <p class="out-of-stock">Este produto está fora de estoque.</p>
         {% endif %}
@@ -22,4 +29,5 @@
     <h1>Descrição</h1>
     {{ product.description }}
 </p>
+
 {% endblock %}

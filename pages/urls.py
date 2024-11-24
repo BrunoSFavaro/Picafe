@@ -12,4 +12,6 @@ urlpatterns = [
     path('finalize', views.finalize_cart, name='finalize_cart'),
     path('historic', views.historic, name="historic"),
     path('order/<int:order_id>', views.order_details, name="order"),
+    path('wishlist/', views.view_wishlist, name="wishlist"),
+    path('wishlist/add/<int:product_id>/', views.add_wishlist, name="add_wishlist")
 ]

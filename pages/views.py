@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from .models import Product, Cart, CartItem, Historic, Order
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Product, Cart, CartItem, Historic, Order, Wishlist
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -160,3 +160,23 @@ def finalize_cart(request):
     return render(request, 'pages/finalize.html', {
         'order': order
     })
+
+@login_required
+def view_wishlist(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user).select_related('product')
+    context = {
+        'wishlist_items': wishlist_items
+    }
+    return render(request, 'pages/wishlist.html', context)
+
+@login_required
+def add_wishlist(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    wishlist_item, created = Wishlist.objects.get_or_create(product=product, user=request.user)
+    if created:
+        messages.success(request, f"'{product.name}' foi adicionado à sua lista de desejos!")
+    else:
+        messages.info(request, f"'{product.name}' já está na sua lista de desejos.")
+
+    return redirect('wishlist')
+    
