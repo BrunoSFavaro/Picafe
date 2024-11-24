@@ -62,3 +62,16 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Order #{self.id} - {self.user.username}'
+    
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'product')  # Evita duplicar o mesmo produto para um usuário
+        ordering = ['-added_at']  # Ordena pelos mais recentes
+
+    def __str__(self):
+        return f"{self.user.username}'s wishlist - {self.product.name}"
