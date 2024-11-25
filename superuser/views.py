@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
-from pages.models import Product
+from pages.models import Category, Product
 from .forms import ProductForm
 
 # Create your views here.
@@ -50,3 +50,10 @@ def delete_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     product.delete()
     return redirect('admin_dashboard')
+
+@staff_member_required
+def view_categorys(request):
+    categorys = Category.objects.all()
+    return render (request, "superuser/categorys.html", {
+        'categorys': categorys
+    })
