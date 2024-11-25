@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
 from pages.models import Category, Product
-from .forms import ProductForm
+from .forms import ProductForm, CategoryForm
 
 # Create your views here.
 
@@ -52,8 +52,21 @@ def delete_product(request, product_id):
     return redirect('admin_dashboard')
 
 @staff_member_required
-def view_categorys(request):
+def view_categories(request):
     categories = Category.objects.all()
     return render (request, "superuser/categories.html", {
         'categories': categories
+    })
+
+@staff_member_required
+def add_category(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+    else:
+        form = CategoryForm()
+    return render(request, 'superuser/add_category.html', {
+        'form': form
     })

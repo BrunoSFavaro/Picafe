@@ -1,0 +1,31 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<div class="container text-center">
+    <h2><a href="{% url 'categories' %}" class="text-decoration-none">Voltar</a></h2>
+    <h1 class="mb-4">Adicionar Nova Categoria</h1>
+    <div class="d-flex justify-content-center">
+        <form method="post" class="w-50">
+            {% csrf_token %}
+            <div class="mb-3 text-start">
+                <label for="id_name" class="form-label">Nome da Categoria</label>
+                <input type="text" name="name" id="id_name" class="form-control" placeholder="Insira o nome da categoria">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_description" class="form-label">Descrição</label>
+                <textarea name="description" id="id_description" class="form-control" placeholder="Descreva a categoria"></textarea>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_is_active" class="form-label">Ativo</label>
+                <select name="is_active" id="id_is_active" class="form-select">
+                    <option value="True" selected>Sim</option>
+                    <option value="False">Não</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Adicionar Categoria</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

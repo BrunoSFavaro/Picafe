@@ -43,6 +43,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'User',
     'pages',
+    'superuser',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
