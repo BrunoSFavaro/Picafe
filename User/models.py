@@ -1,5 +1,7 @@
 from django.db import models
+from pages.models import Product
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 class Profile(models.Model):
@@ -53,3 +55,19 @@ class UserPayments(models.Model):
         verbose_name = "Método de Pagamento"
         verbose_name_plural = "Métodos de Pagamento"
 
+
+class Feedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    page = models.CharField(max_length=255, null=True, blank=True)  # Ex.: 'Home', 'Produtos'
+    feedback_text = models.TextField()
+    rating = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        null=True,
+        blank=True,
+        help_text="Nota de 0 a 5"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product} {self.user}'s feedback. Rating {self.rating}/5"

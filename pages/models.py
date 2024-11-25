@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from superuser.models import Category
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 # Create your models here.
@@ -79,18 +78,3 @@ class Wishlist(models.Model):
     def __str__(self):
         return f"{self.user.username}'s wishlist - {self.product.name}"
 
-class Feedback(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
-    page = models.CharField(max_length=255, null=True, blank=True)  # Ex.: 'Home', 'Produtos'
-    feedback_text = models.TextField()
-    rating = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(5)],
-        null=True,
-        blank=True,
-        help_text="Nota de 0 a 5"
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.product} {self.user}'s feedback. Rating {self.rating}/5"

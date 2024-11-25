@@ -15,5 +15,6 @@ urlpatterns = [
     path("profile/payments/", views.view_payments, name="payments"),
     path("profile/payments/add/", views.add_payment, name="add_payment"),
     path("profile/payments/edit/<int:payment_id>/", views.edit_payment, name="edit_payment"),
-    path("profile/payments/delete/<int:payment_id>/", views.delete_payment, name="delete_payment")
+    path("profile/payments/delete/<int:payment_id>/", views.delete_payment, name="delete_payment"),
+    path("profile/feedbacks/", views.view_feedbacks, name="feedbacks"),
 ]

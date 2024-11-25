@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from .models import Profile, UserAddress, UserPayments
+from .models import Profile, UserAddress, UserPayments, Feedback
 from .forms import AddressForm, PaymentForm
 from datetime import datetime
 
@@ -250,3 +250,11 @@ def delete_payment(request, payment_id):
     payment = get_object_or_404(UserPayments, id=payment_id)
     payment.delete()
     return redirect('payments')
+
+@login_required
+def view_feedbacks(request):
+    feedback_list = Feedback.objects.filter(user=request.user).select_related('product').order_by('-created_at')
+    context = {
+        'feedback_list': feedback_list
+    }
+    return render(request, 'User/feedbacks.html', context)

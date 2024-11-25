@@ -1,0 +1,15 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+{% if feedback_list %}
+    <ul>
+        {% for feedback in feedback_list %}
+            <li>{{ feedback.product.name }}: {{ feedback.feedback_text }} ({{ feedback.rating }}/5)</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Você ainda não enviou nenhum feedback.</p>
+{% endif %}
+
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Cart, CartItem, Historic, Order, Wishlist, Feedback
+from .models import Product, Cart, CartItem, Historic, Order, Wishlist
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -185,11 +185,3 @@ def remove_from_wishlist(request, product_id):
     wishlist_item = Wishlist.objects.get(product_id=product_id, user=request.user)
     wishlist_item.delete()
     return redirect('wishlist')
-
-@login_required
-def view_feedbacks(request):
-    feedback_list = Feedback.objects.filter(user=request.user).select_related('product').order_by('-created_at')
-    context = {
-        'feedback_list': feedback_list
-    }
-    return render(request, 'pages/feedbacks.html', context)
