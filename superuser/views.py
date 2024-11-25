@@ -53,7 +53,7 @@ def delete_product(request, product_id):
 
 @staff_member_required
 def view_categorys(request):
-    categorys = Category.objects.all()
-    return render (request, "superuser/categorys.html", {
-        'categorys': categorys
+    categories = Category.objects.all()
+    return render (request, "superuser/categories.html", {
+        'categories': categories
     })
