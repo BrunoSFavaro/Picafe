@@ -70,3 +70,18 @@ def add_category(request):
     return render(request, 'superuser/add_category.html', {
         'form': form
     })
+
+@staff_member_required
+def edit_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES, instance=category)
+        if form.is_Valid():
+            form.save()
+            return redirect('categories')
+    else:
+        form = CategoryForm(instance=category)
+        return render(request, 'superuser/edit_category.html', {
+            'form': form,
+            'category': category
+        })

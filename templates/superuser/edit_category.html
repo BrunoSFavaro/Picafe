@@ -1,0 +1,31 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<div class="container text-center">
+    <h2><a href="{% url 'categories' %}" class="text-decoration-none">Voltar</a></h2>
+    <h1 class="mb-4">Editar Categoria: {{ category.name }}</h1>
+    <div class="d-flex justify-content-center">
+        <form method="post" class="w-50">
+            {% csrf_token %}
+            <div class="mb-3 text-start">
+                <label for="id_name" class="form-label">Nome da Categoria</label>
+                <input type="text" name="name" id="id_name" class="form-control" value="{{ form.name.value }}">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_description" class="form-label">Descrição</label>
+                <textarea name="description" id="id_description" class="form-control">{{ form.description.value }}</textarea>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_is_active" class="form-label">Ativo</label>
+                <select name="is_active" id="id_is_active" class="form-select">
+                    <option value="True" {% if form.is_active.value == True %}selected{% endif %}>Sim</option>
+                    <option value="False" {% if form.is_active.value == False %}selected{% endif %}>Não</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Atualizar Categoria</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
