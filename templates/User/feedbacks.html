@@ -32,7 +32,7 @@
                         </div>
                         <div>
                             <a href="{% url 'edit_feedback' feedback.id %}" class="btn btn-sm btn-primary">Editar</a>
-                            <a href="#" class="btn btn-sm btn-danger">Excluir</a>
+                            <a href="{% url 'delete_feedback' feedback.id %}" class="btn btn-sm btn-danger">Excluir</a>
                         </div>
                     </li>
                 {% endfor %}

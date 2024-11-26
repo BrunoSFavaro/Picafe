@@ -310,3 +310,8 @@ def edit_feedback(request, feedback_id):
         'feedback': feedback
     })
 
+@login_required
+def delete_feedback(request, feedback_id):
+    feedback = get_object_or_404(Feedback, id=feedback_id)
+    feedback.delete()
+    return redirect('feedbacks')
