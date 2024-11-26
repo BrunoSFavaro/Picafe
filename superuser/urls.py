@@ -10,8 +10,9 @@ urlpatterns = [
     path('categories/', views.view_categories, name="categories"),
     path('categories/add/', views.add_category, name='add_category'),
     path('categories/edit/<int:category_id>/', views.edit_category, name='edit_category'),
+    path('categories/delete/<int:category_id>/', views.delete_category, name="delete_category"),
     path('carries/', views.view_carries, name="carries"),
     path('carries/add/', views.add_carrier, name="add_carrier"),
-    path('carries/edit/<int:carrier_id>/', views.edit_carrier, name="edit_carrier")
-
+    path('carries/edit/<int:carrier_id>/', views.edit_carrier, name="edit_carrier"),
+    path('carries/delete/<int:carrier_id>/', views.delete_carrier, name="delete_carrier")
 ]

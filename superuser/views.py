@@ -87,7 +87,14 @@ def edit_category(request, category_id):
             'form': form,
             'category': category
         })
-    
+
+@staff_member_required
+def delete_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    category.delete()
+    messages.warning(request, "Categoria removida do sistema.")
+    return redirect('categories')
+
 @staff_member_required
 def view_carries(request):
     carries = Carrier.objects.all()
@@ -124,3 +131,10 @@ def edit_carrier(request, carrier_id):
             'form': form,
             'carrier': carrier,
         })
+    
+@staff_member_required
+def delete_carrier(request, carrier_id):
+    carrier = get_object_or_404(Carrier, id=carrier_id)
+    carrier.delete()
+    messages.warning(request, "Transportadora remvoida do sistema.")
+    return redirect('carries')
