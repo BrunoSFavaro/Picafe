@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category
+from .models import Category, Carrier
 from pages.models import Product  # Importando a model Product da app pages
 
 class ProductForm(forms.ModelForm):
@@ -11,3 +11,8 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['name', 'description', 'is_active']
+
+class CarrierForm(forms.ModelForm):
+    class Meta:
+        model = Carrier
+        fields = ['name', 'cnpj', 'phone', 'email']

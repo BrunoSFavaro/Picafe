@@ -3,7 +3,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
 from .models import Carrier
 from pages.models import Category, Product
-from .forms import ProductForm, CategoryForm
+from .forms import ProductForm, CategoryForm, CarrierForm
 
 # Create your views here.
 
@@ -92,4 +92,17 @@ def view_carries(request):
     carries = Carrier.objects.all()
     return render(request, "superuser/carries.html", {
         'carries': carries
+    })
+
+@staff_member_required
+def add_carrier(request):
+    if request.method == 'POST':
+        form = CarrierForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('carries')
+    else:
+        form = CarrierForm()
+    return render(request, 'superuser/add_carrier.html', {
+        'form': form
     })

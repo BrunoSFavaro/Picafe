@@ -11,4 +11,5 @@ urlpatterns = [
     path('categories/add/', views.add_category, name='add_category'),
     path('categories/edit/<int:category_id>/', views.edit_category, name='edit_category'),
     path('carries/', views.view_carries, name="carries"),
+    path('carries/add/', views.add_carrier, name="add_carrier"),
 ]
