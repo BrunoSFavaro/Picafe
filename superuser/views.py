@@ -78,7 +78,7 @@ def edit_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     if request.method == 'POST':
         form = CategoryForm(request.POST, request.FILES, instance=category)
-        if form.is_Valid():
+        if form.is_valid():
             form.save()
             return redirect('categories')
     else:

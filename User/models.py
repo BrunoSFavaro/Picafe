@@ -70,3 +70,33 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"{self.product} {self.user}'s feedback. Rating {self.rating}/5"
+
+class Discount(models.Model):
+    code = models.CharField(max_length=20, unique=True)  # Código único para o cupom
+    description = models.TextField(blank=True, null=True)  # Descrição opcional do cupom
+    discount_type = models.CharField(
+        max_length=10,
+        choices=[('fixo', 'Fixo'), ('percentual', 'Percentual')],
+        default='percentual'
+    )
+    value = models.DecimalField(max_digits=10, decimal_places=2)  # Valor do desconto
+    start_date = models.DateTimeField()  # Data de início da validade
+    end_date = models.DateTimeField()  # Data de término da validade
+    active = models.BooleanField(default=True)  # Se o cupom está ativo ou não
+
+    def is_valid(self):
+        """
+        Verifica se o cupom é válido com base na data, uso e status.
+        """
+        from django.utils.timezone import now
+        if not self.active:
+            return False
+        if self.end_date < now():
+            return False
+        if self.usage_limit is not None and self.usage_count >= self.usage_limit:
+            return False
+        return True
+
+    def __str__(self):
+        return self.code
+
