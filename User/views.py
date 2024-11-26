@@ -287,4 +287,26 @@ def make_feedback(request, product_id):
         # Redireciona para a página de feedbacks do usuário
         return redirect('feedbacks')  # Aqui redireciona para 'view_feedbacks', que já está configurado
 
-    return render(request, 'User/add_feedback.html', {'product': product})
+    return render(request, 'User/add_feedback.html', {
+        'product': product
+    })
+
+@login_required
+def edit_feedback(request, feedback_id):
+    feedback = get_object_or_404(Feedback, id=feedback_id, user=request.user)
+
+    if request.method == 'POST':
+        feedback_text = request.POST.get("feedback_text")
+        rating = request.POST.get("rating")
+
+        feedback.feedback_text = feedback_text
+        feedback.rating = rating
+        feedback.save()
+
+        messages.success(request, "Feedback atualizado com sucesso!")
+        return redirect('feedbacks')
+    
+    return render(request, "User/edit_feedback.html", {
+        'feedback': feedback
+    })
+
