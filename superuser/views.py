@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
-from .models import Carrier
+from .models import Carrier, Discount
 from pages.models import Category, Product
 from .forms import ProductForm, CategoryForm, CarrierForm
 
@@ -138,3 +138,10 @@ def delete_carrier(request, carrier_id):
     carrier.delete()
     messages.warning(request, "Transportadora remvoida do sistema.")
     return redirect('carries')
+
+@staff_member_required
+def view_discounts(request):
+    discounts = Discount.objects.all()
+    return render(request, "superuser/discounts.html", {
+        'discounts': discounts
+    })
