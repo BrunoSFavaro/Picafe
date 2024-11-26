@@ -59,7 +59,6 @@ class UserPayments(models.Model):
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
-    page = models.CharField(max_length=255, null=True, blank=True)  # Ex.: 'Home', 'Produtos'
     feedback_text = models.TextField()
     rating = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(5)],

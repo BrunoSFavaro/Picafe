@@ -1,0 +1,43 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <h2>Deixe seu Feedback</h2>
+
+    <h4 class="mt-3">Produto: {{ product.name }}</h4>
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid mb-3" style="max-height: 200px;">
+
+    {% if messages %}
+    <div class="alert-container">
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} w-50 mx-auto">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <form method="post" class="w-50 mx-auto">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="rating" class="form-label">Avaliação</label>
+            <select id="rating" name="rating" class="form-control" required>
+                <option value="1">1 - Péssimo</option>
+                <option value="2">2 - Ruim</option>
+                <option value="3">3 - Regular</option>
+                <option value="4">4 - Bom</option>
+                <option value="5">5 - Excelente</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="feedback_text" class="form-label">Comentário</label>
+            <textarea class="form-control" id="feedback_text" name="feedback_text" rows="4" placeholder="Escreva seu feedback aqui..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Enviar Feedback</button>
+    </form>
+</div>
+
+{% endblock %}

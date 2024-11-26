@@ -4,11 +4,11 @@
 {% block body %}
 
 <h1>Detalhes do Pedido #{{ order.id }}</h1>
-<p>Data do Pedido: {{ order.created_at }}</p>
-<p>Valor Total: R$ {{ order.total_price }}</p>
+<p>Data do Pedido: {{ order.created_at|date:"d/m/Y H:i" }}</p>
+<p>Valor Total: R$ {{ order.total_price|floatformat:2 }}</p>
 
 <h2>Produtos</h2>
-<table>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Imagem</th>
@@ -16,20 +16,29 @@
             <th>Quantidade</th>
             <th>Preço Unitário</th>
             <th>Subtotal</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
         {% for item in products %}
             <tr>
-                <td class="col-1 pb-5"><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="200"></td>
+                <td class="col-1 pb-5">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="200" class="img-thumbnail">
+                </td>
                 <td class="col-1">{{ item.product.name }}</td>
                 <td class="col-1">{{ item.quantity }}</td>
-                <td class="col-1">R$ {{ item.product.price }}</td>
+                <td class="col-1">R$ {{ item.product.price|floatformat:2 }}</td>
                 <td class="col-1">R$ {{ item.quantity|multiply:item.product.price|floatformat:2 }}</td>
+                <td class="col-1">
+                    <a href="{% url 'make_feedback' item.product.id %}" class="btn btn-sm btn-primary">
+                        Avaliar
+                    </a>
+                </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
+
 
 
 {% endblock %}

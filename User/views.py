@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from .models import Profile, UserAddress, UserPayments, Feedback
+from pages.models import Product
 from .forms import AddressForm, PaymentForm
 from datetime import datetime
 
@@ -253,8 +254,37 @@ def delete_payment(request, payment_id):
 
 @login_required
 def view_feedbacks(request):
-    feedback_list = Feedback.objects.filter(user=request.user).select_related('product').order_by('-created_at')
+    feedbacks = Feedback.objects.filter(user=request.user).select_related('product').order_by('-created_at')
     context = {
-        'feedback_list': feedback_list
+        'feedbacks': feedbacks
     }
     return render(request, 'User/feedbacks.html', context)
+
+@login_required
+def make_feedback(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    
+    if request.method == 'POST':
+        feedback_text = request.POST.get('feedback_text')
+        rating = request.POST.get('rating')
+
+        if not feedback_text or not rating:
+            messages.error(request, "Por favor, preencha todos os campos.")
+            return redirect('make_feedback', product_id=product_id)
+
+        try:
+            rating = int(rating)
+            if rating < 1 or rating > 5:
+                raise ValueError("Avaliação inválida")
+        except ValueError:
+            messages.error(request, "Por favor, forneça uma avaliação válida (1 a 5).")
+            return redirect('make_feedback', product_id=product_id)
+
+        # Criação do feedback
+        Feedback.objects.create(user=request.user, product=product, feedback_text=feedback_text, rating=rating)
+        messages.success(request, "Seu feedback foi enviado com sucesso!")
+        
+        # Redireciona para a página de feedbacks do usuário
+        return redirect('feedbacks')  # Aqui redireciona para 'view_feedbacks', que já está configurado
+
+    return render(request, 'User/add_feedback.html', {'product': product})
