@@ -1,0 +1,51 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <h1 class="text-center">Transportadoras</h1>
+
+    <!-- Mensagens de sucesso ou erro -->
+    {% if messages %}
+        <ul class="messages list-unstyled d-flex flex-column align-items-center">
+            {% for message in messages %}
+                <li class="alert alert-{{ message.tags }} w-50 text-center rounded-pill py-2">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Listagem de transportadoras -->
+    <div class="carrier-card card shadow p-4 mt-4">
+        <h2 class="mb-3">Transportadoras Cadastradas</h2>
+
+        {% if carries.exists %}
+            <ul class="list-group">
+                {% for carrier in carries %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center card-box mb-5">
+                        <div>
+                            <h5>Nome: {{ carrier.name }}</h5>
+                            <p><strong>CNPJ:</strong> {{ carrier.cnpj }}</p>
+                            {% if carrier.phone %}
+                                <p><strong>Telefone:</strong> {{ carrier.phone }}</p>
+                            {% endif %}
+                            {% if carrier.email %}
+                                <p><strong>E-mail:</strong> {{ carrier.email }}</p>
+                            {% endif %}
+                            <p><strong>Registrado em:</strong> {{ carrier.created_at|date:"d/m/Y H:i" }}</p>
+                        </div>
+                        <div>
+                            <a href="#" class="btn btn-sm btn-primary">Editar</a>
+                            <a href="#" class="btn btn-sm btn-danger">Excluir</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">Nenhuma transportadora cadastrada.</p>
+        {% endif %}
+    </div>    
+</div>
+
+{% endblock %}

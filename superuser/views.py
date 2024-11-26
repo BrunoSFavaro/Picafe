@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
+from .models import Carrier
 from pages.models import Category, Product
 from .forms import ProductForm, CategoryForm
 
@@ -85,3 +86,10 @@ def edit_category(request, category_id):
             'form': form,
             'category': category
         })
+    
+@staff_member_required
+def view_carries(request):
+    carries = Carrier.objects.all()
+    return render(request, "superuser/carries.html", {
+        'carries': carries
+    })
