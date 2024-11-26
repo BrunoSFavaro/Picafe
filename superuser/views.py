@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
 from .models import Carrier
@@ -100,9 +101,26 @@ def add_carrier(request):
         form = CarrierForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, "Transportadora cadastrada com sucesso!")
             return redirect('carries')
     else:
         form = CarrierForm()
     return render(request, 'superuser/add_carrier.html', {
         'form': form
     })
+
+@staff_member_required
+def edit_carrier(request, carrier_id):
+    carrier = get_object_or_404(Carrier, id=carrier_id)
+    if request.method == 'POST':
+        form = CarrierForm(request.POST, request.FILES, instance=carrier)
+        if form.is_valid():
+            form.save()
+            return redirect('carries')
+    else:
+        form = CarrierForm(instance=carrier)
+        messages.success(request, "Transportadora alterada com sucesso!")
+        return render(request, 'superuser/edit_carrier.html', {
+            'form': form,
+            'carrier': carrier,
+        })

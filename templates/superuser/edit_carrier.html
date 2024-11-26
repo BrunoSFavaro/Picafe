@@ -4,27 +4,27 @@
 
 <div class="container text-center">
     <h2><a href="{% url 'carries' %}" class="text-decoration-none">Voltar</a></h2>
-    <h1 class="mb-4">Adicionar Nova Transportadora</h1>
+    <h1 class="mb-4">Editar Transportadora: {{ carrier.name }}</h1>
     <div class="d-flex justify-content-center">
-        <form method="post" class="w-50">
+        <form method="post" enctype="multipart/form-data" class="w-50">
             {% csrf_token %}
             <div class="mb-3 text-start">
                 <label for="id_name" class="form-label">Nome da Transportadora</label>
-                <input type="text" name="name" id="id_name" class="form-control" placeholder="Insira o nome da Transportadora">
+                <input type="text" name="name" id="id_name" class="form-control" value="{{ form.name.value }}">
             </div>
             <div class="mb-3 text-start">
                 <label for="id_cnpj" class="form-label">CNPJ</label>
-                <input type="text" name="cnpj" id="id_cnpj" class="form-control" placeholder="Digite o CNPJ">
+                <input type="text" name="cnpj" id="id_cnpj" class="form-control" value="{{ form.cnpj.value }}">
             </div>
             <div class="mb-3 text-start">
                 <label for="id_phone" class="form-label">Telefone</label>
-                <input type="number" name="phone" id="id_phone" class="form-control" placeholder="Digite o telefone">
+                <input type="number" name="phone" id="id_phone" class="form-control" value="{{ form.phone.value }}">
             </div>
             <div class="mb-3 text-start">
-                <label for="id_email" class="form-label">Email</label>
-                <input type="email" name="email" id="id_email" class="form-control" placeholder="Digite o email">
+                <label for="id_email" class="form-label"></label>
+                <input type="email" name="email" id="id_email" class="form-control" value="{{ form.email.value }}">
             </div>
-            <button type="submit" class="btn btn-primary w-100">Adicionar Transportadora</button>
+            <button type="submit" class="btn btn-success w-100">Atualizar Produto</button>
         </form>
     </div>
 </div>
