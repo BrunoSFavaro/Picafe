@@ -59,7 +59,7 @@
                         </td>
                         <td>
                             <a href="{% url 'edit_discount' discount.id %}" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="#" class="btn btn-danger btn-sm">Excluir</a>
+                            <a href="{% url 'delete_discount' discount.id %}" class="btn btn-danger btn-sm">Excluir</a>
                         </td>
                     </tr>
                 {% endfor %}

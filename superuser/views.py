@@ -175,3 +175,10 @@ def edit_discount(request, discount_id):
             'form': form,
             'discount': discount
         })
+    
+@staff_member_required
+def delete_discount(request, discount_id):
+    discount = get_object_or_404(Discount, id = discount_id)
+    discount.delete()
+    messages.warning(request, "Cupom de desconto removido do sistema.")
+    return redirect('discounts')
