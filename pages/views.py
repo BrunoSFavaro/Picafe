@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Cart, CartItem, Historic, Order, Wishlist
+from User.models import UserAddress
+from superuser.models import Carrier
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -126,39 +128,106 @@ def remove_from_cart(request, item_id):
             request.session['cart'] = cart
     return redirect('view_cart')
 
+def checkout(request):
+    # Recuperar itens do carrinho do usuário logado
+    cart_items = CartItem.objects.filter(user=request.user)
+    
+    # Calcular o total
+    total_price = sum(item.product.price * item.quantity for item in cart_items)
+    
+    # Obter endereços e transportadoras
+    user_addresses = UserAddress.objects.filter(user=request.user)
+    carriers = Carrier.objects.all()
+    
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'user_addresses': user_addresses,
+        'carriers': carriers,
+    }
+    return render(request, 'pages/checkout.html', context)
+
 def finalize_cart(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    cart_items = CartItem.objects.filter(user=request.user, cart__isnull=True)    
-    
+    # Buscar itens do carrinho para o usuário
+    cart_items = CartItem.objects.filter(user=request.user)
+
+    # Verificar se o carrinho está vazio
     if not cart_items.exists():
-        return redirect('view_cart')
-    
-    total_price = sum(item.product.price * item.quantity for item in cart_items)
-    order = Order.objects.create(user=request.user, total_price=total_price)
+        return redirect('view_cart')  # Caso o carrinho esteja vazio, redireciona para a página do carrinho
 
-    for item in cart_items:
-        product = item.product
-        quantity = item.quantity
+    if request.method == 'POST':
+        # Obter os dados do formulário
+        address_id = request.POST.get('address')
+        carrier_id = request.POST.get('carrier')
 
-        if product.stock_quantity >= quantity:
-            product.stock_quantity -= quantity
-            product.save()
-        else:
-            return render(request, 'pages/cart.html', {
-                'product': product
+        # Verificar se o endereço e transportadora foram selecionados
+        if not address_id or not carrier_id:
+            return render(request, 'pages/checkout.html', {
+                'error': 'Por favor, selecione um endereço e um método de entrega.',
+                'cart_items': cart_items,
+                'user_addresses': UserAddress.objects.filter(user=request.user),
+                'carriers': Carrier.objects.all(),
+                'total_price': sum(item.product.price * item.quantity for item in cart_items),
             })
 
-        Historic.objects.create(
-            order=order,
-            product=product,
-            quantity=quantity,
-            date_added=item.date_added
+        # Validar o endereço e a transportadora
+        address = get_object_or_404(UserAddress, id=address_id, user=request.user)
+        carrier = get_object_or_404(Carrier, id=carrier_id)
+
+        # Calcular o preço total
+        total_price = sum(item.product.price * item.quantity for item in cart_items)
+
+        # Criar o pedido
+        order = Order.objects.create(
+            user=request.user,
+            total_price=total_price,
+            address=address,
+            carrier=carrier
         )
-        item.delete()
-    return render(request, 'pages/finalize.html', {
-        'order': order
+
+        # Processar os itens do carrinho
+        for item in cart_items:
+            product = item.product
+            quantity = item.quantity
+
+            # Verificar e atualizar o estoque do produto
+            if product.stock_quantity >= quantity:
+                product.stock_quantity -= quantity
+                product.save()
+            else:
+                return render(request, 'pages/cart.html', {
+                    'error': f"Estoque insuficiente para o produto {product.name}.",
+                    'cart_items': cart_items
+                })
+
+            # Mover os itens para o histórico
+            Historic.objects.create(
+                order=order,
+                product=product,
+                quantity=quantity,
+                date_added=item.date_added
+            )
+
+            # Remover o item do carrinho
+            item.delete()
+
+        # Após finalizar o pedido, redireciona para uma página de confirmação ou exibe a página de sucesso
+        return render(request, 'pages/finalize.html', {
+            'order': order
+        })
+
+    # Se for um GET, renderiza o checkout normalmente
+    user_addresses = UserAddress.objects.filter(user=request.user)
+    carriers = Carrier.objects.all()
+
+    return render(request, 'pages/checkout.html', {
+        'cart_items': cart_items,
+        'user_addresses': user_addresses,
+        'carriers': carriers,
+        'total_price': sum(item.product.price * item.quantity for item in cart_items)
     })
 
 @login_required
