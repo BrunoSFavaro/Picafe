@@ -1,0 +1,48 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<div class="container text-center">
+    <h2><a href="{% url 'discounts' %}" class="text-decoration-none">Voltar</a></h2>
+    <h1 class="mb-4">Adicionar Novo Cupom de Desconto</h1>
+    <div class="d-flex justify-content-center">
+        <form method="post" class="w-50">
+            {% csrf_token %}
+            <div class="mb-3 text-start">
+                <label for="id_code" class="form-label">Código do Cupom</label>
+                <input type="text" name="code" id="id_code" class="form-control" placeholder="Insira o código do cupom">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_description" class="form-label">Descrição</label>
+                <textarea name="description" id="id_description" class="form-control" rows="3" placeholder="Digite a descrição (opcional)"></textarea>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_discount_type" class="form-label">Tipo de Desconto</label>
+                <select name="discount_type" id="id_discount_type" class="form-control">
+                    <option value="id_discount_type">Percentual</option>
+                    <option value="id_discount_type">Valor Fixo</option>
+                </select>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_value" class="form-label">Valor do Desconto</label>
+                <input type="number" name="value" id="id_value" class="form-control" placeholder="Digite o valor do desconto">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_start_date" class="form-label">Data de Início</label>
+                <input type="date" name="start_date" id="id_start_date" class="form-control">
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_end_date" class="form-label">Data de Término</label>
+                <input type="date" name="end_date" id="id_end_date" class="form-control">
+            </div>
+            <div class="mb-3 text-start form-check">
+                <input type="checkbox" name="active" id="id_active" class="form-check-input" checked>
+                <label for="id_active" class="form-check-label">Ativo</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Adicionar Cupom</button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

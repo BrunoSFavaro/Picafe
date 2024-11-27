@@ -4,7 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
 from .models import Carrier, Discount
 from pages.models import Category, Product
-from .forms import ProductForm, CategoryForm, CarrierForm
+from .forms import ProductForm, CategoryForm, CarrierForm, DiscountForm
 
 # Create your views here.
 
@@ -144,4 +144,18 @@ def view_discounts(request):
     discounts = Discount.objects.all()
     return render(request, "superuser/discounts.html", {
         'discounts': discounts
+    })
+
+@staff_member_required
+def add_discount(request):
+    if request.method == 'POST':
+        form = DiscountForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cupom cadastrado no sistema com sucesso!")
+            return redirect ('discounts')
+    else:
+        form = DiscountForm()
+    return render(request, 'superuser/add_discount.html', {
+        'form': form
     })

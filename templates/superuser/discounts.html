@@ -15,7 +15,7 @@
 <div class="container mt-4">
     <h1 class="text-center mb-4">Cupons de Desconto</h1>
     <div class="text-center mb-3">
-        <a href="#" class="btn btn-success">Adicionar Novo Cupom</a>
+        <a href="{% url 'add_discount' %}" class="btn btn-success">Adicionar Novo Cupom</a>
     </div>
     {% if discounts %}
         <table class="table table-bordered table-striped text-center">

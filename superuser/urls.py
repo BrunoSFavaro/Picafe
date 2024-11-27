@@ -16,5 +16,5 @@ urlpatterns = [
     path('carries/edit/<int:carrier_id>/', views.edit_carrier, name="edit_carrier"),
     path('carries/delete/<int:carrier_id>/', views.delete_carrier, name="delete_carrier"),
     path('discounts/', views.view_discounts, name="discounts"),
-    
+    path('discounts/add/', views.add_discount, name="add_discount"),
 ]

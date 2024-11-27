@@ -35,12 +35,12 @@ class Discount(models.Model):
     description = models.TextField(blank=True, null=True)  # Descrição opcional do cupom
     discount_type = models.CharField(
         max_length=10,
-        choices=[('fixo', 'Fixo'), ('percentual', 'Percentual')],
-        default='percentual'
+        choices=[('fixed', 'Fixo'), ('percentage', 'Percentual')],
+        default='percentage'
     )
     value = models.DecimalField(max_digits=10, decimal_places=2)  # Valor do desconto
-    start_date = models.DateTimeField()  # Data de início da validade
-    end_date = models.DateTimeField()  # Data de término da validade
+    start_date = models.DateField()  # Data de início da validade
+    end_date = models.DateField()  # Data de término da validade
     active = models.BooleanField(default=True)  # Se o cupom está ativo ou não
 
     def is_valid(self):
