@@ -17,4 +17,5 @@ urlpatterns = [
     path('carries/delete/<int:carrier_id>/', views.delete_carrier, name="delete_carrier"),
     path('discounts/', views.view_discounts, name="discounts"),
     path('discounts/add/', views.add_discount, name="add_discount"),
+    path('discounts/edit/<int:discount_id>/', views.edit_discount, name="edit_discount")
 ]

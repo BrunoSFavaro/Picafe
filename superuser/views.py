@@ -159,3 +159,19 @@ def add_discount(request):
     return render(request, 'superuser/add_discount.html', {
         'form': form
     })
+
+@staff_member_required
+def edit_discount(request, discount_id):
+    discount = get_object_or_404(Discount, id=discount_id)
+    if request.method == 'POST':
+        form = DiscountForm(request.POST, request.FILES, instance=discount)
+        if form.is_valid():
+            form.save()
+            return redirect('discounts')
+    else:
+        form = DiscountForm(instance=discount)
+        messages.success(request, f"Cupom {discount.code} editado com sucesso!")
+        return render(request, 'superuser/edit_discount.html', {
+            'form': form,
+            'discount': discount
+        })
