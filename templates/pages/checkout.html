@@ -18,7 +18,7 @@
         <!-- Coluna: Endereço de entrega e método -->
         <div class="col-md-7">
             <!-- Formulário de envio -->
-            <form method="POST" action="{% url 'finalize_cart' %}">
+            <form method="POST" action="{% url 'checkout_payment' %}">
                 {% csrf_token %}
                 <!-- Endereço de entrega -->
                 <h3>Endereço de entrega</h3>

@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Cart, CartItem, Historic, Order, Wishlist
-from User.models import UserAddress
+from User.models import UserAddress, UserPayments
 from superuser.models import Carrier
 from django.contrib.auth.decorators import login_required
 
@@ -147,6 +147,20 @@ def checkout(request):
     }
     return render(request, 'pages/checkout.html', context)
 
+def checkout_payment(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+
+    total_price = sum(item.product.price * item.quantity for item in cart_items)
+
+    payment_methods = UserPayments.objects.filter(user=request.user)
+
+    context = {
+        'cart_item': cart_items,
+        'total_price': total_price,
+        'payment_methods': payment_methods
+    }
+    return render(request, 'pages/checkout_payment.html', context)
+
 def finalize_cart(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -162,20 +176,23 @@ def finalize_cart(request):
         # Obter os dados do formulário
         address_id = request.POST.get('address')
         carrier_id = request.POST.get('carrier')
+        payment_id = request.POST.get('payment')
 
         # Verificar se o endereço e transportadora foram selecionados
-        if not address_id or not carrier_id:
-            return render(request, 'pages/checkout.html', {
-                'error': 'Por favor, selecione um endereço e um método de entrega.',
-                'cart_items': cart_items,
-                'user_addresses': UserAddress.objects.filter(user=request.user),
-                'carriers': Carrier.objects.all(),
-                'total_price': sum(item.product.price * item.quantity for item in cart_items),
-            })
+        if not address_id or not carrier_id or not payment_id:
+            return render(request, 'pages/checkout_payment.html', {
+            'error': 'Por favor, selecione um endereço, um método de entrega e um método de pagamento.',
+            'cart_items': cart_items,
+            'user_addresses': UserAddress.objects.filter(user=request.user),
+            'carriers': Carrier.objects.all(),
+            'payment_methods': UserPayments.objects.filter(user=request.user),
+            'total_price': sum(item.product.price * item.quantity for item in cart_items),
+        })
 
         # Validar o endereço e a transportadora
         address = get_object_or_404(UserAddress, id=address_id, user=request.user)
         carrier = get_object_or_404(Carrier, id=carrier_id)
+        payment = get_object_or_404(UserPayments, id=payment_id, user=request.user)
 
         # Calcular o preço total
         total_price = sum(item.product.price * item.quantity for item in cart_items)
@@ -185,7 +202,8 @@ def finalize_cart(request):
             user=request.user,
             total_price=total_price,
             address=address,
-            carrier=carrier
+            carrier=carrier,
+            payment=payment
         )
 
         # Processar os itens do carrinho
@@ -222,11 +240,13 @@ def finalize_cart(request):
     # Se for um GET, renderiza o checkout normalmente
     user_addresses = UserAddress.objects.filter(user=request.user)
     carriers = Carrier.objects.all()
+    user_payment = UserPayments.objects.filter(user=request.user)
 
     return render(request, 'pages/checkout.html', {
         'cart_items': cart_items,
         'user_addresses': user_addresses,
         'carriers': carriers,
+        'user_payment': user_payment,
         'total_price': sum(item.product.price * item.quantity for item in cart_items)
     })
 
