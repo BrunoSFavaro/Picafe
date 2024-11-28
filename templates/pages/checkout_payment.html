@@ -2,86 +2,102 @@
 
 {% block body %}
 
-<div class="container mt-4">
-    <h2 class="text-center mb-4">Pagamento</h2>
+    {% if messages %}
+    <ul class="messages list-unstyled d-flex flex-column align-items-center">
+        {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} w-70 text-center rounded-pill py-2">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
-    <!-- Barra de progresso -->
-    <div class="d-flex justify-content-center mb-4">
-        <div class="step-indicator d-flex align-items-center">
-            <div class="step completed">Entrega</div>
-            <div class="line"></div>
-            <div class="step completed">Pagamento</div>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Pagamento</h2>
+
+        <!-- Barra de progresso -->
+        <div class="d-flex justify-content-center mb-4">
+            <div class="step-indicator d-flex align-items-center">
+                <div class="step completed">Entrega</div>
+                <div class="line"></div>
+                <div class="step completed">Pagamento</div>
+            </div>
         </div>
-    </div>
 
-    <div class="row">
-        <!-- Coluna: Seleção do Método de Pagamento -->
-        <div class="col-md-7">
-            <form method="POST" action="{% url 'finalize_cart' %}">
-                {% csrf_token %}
+        <div class="row">
+            <!-- Coluna: Seleção do Método de Pagamento -->
+            <div class="col-md-7">
+                <form method="POST" action="{% url 'finalize_cart' %}">
+                    {% csrf_token %}
+                
+                    <!-- Campo oculto para endereço -->
+                    <input type="hidden" name="address" value="{{ address.id }}">
+                
+                    <!-- Campo oculto para transportadora -->
+                    <input type="hidden" name="carrier" value="{{ carrier.id }}">
+                
+                    <!-- Método de Pagamento -->
+                    <h3>Método de Pagamento</h3>
+                    <div class="payment-methods p-3 mb-3 border rounded">
+                        {% for payment in payment_methods %}
+                        <div class="form-check">
+                            <input
+                                type="radio"
+                                id="payment_{{ payment.id }}"
+                                name="payment"
+                                value="{{ payment.id }}"
+                                class="form-check-input"
+                                {% if payment.is_default or forloop.first %}checked{% endif %}
+                            >
+                            <label for="payment_{{ payment.id }}" class="form-check-label">
+                                <strong>{{ payment.payment_type }}</strong><br>
+                                {% if payment.payment_type == 'Cartão de Crédito' or payment.payment_type == 'Cartão de Débito' %}
+                                    Nome no cartão: {{ payment.card_holder_name }}<br>
+                                    Número: **** **** **** {{ payment.card_number|slice:"-4:" }}<br>
+                                    Expira em: {{ payment.expiration_date|date:"m/Y" }}
+                                {% endif %}
+                            </label>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted">Você ainda não tem métodos de pagamento cadastrados.</p>
+                        {% endfor %}
+                        <a href="{% url 'add_payment' %}" class="btn btn-outline-primary w-100 mt-3">Adicionar novo método de pagamento</a>
+                    </div>
+                
+                    <!-- Botão de Finalizar -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary px-5">Finalizar Pedido</button>
+                    </div>
+                </form>
+            </div>
 
-                <!-- Método de Pagamento -->
-                <h3>Método de Pagamento</h3>
-                <div class="payment-methods p-3 mb-3 border rounded">
-                    {% for payment in payment_methods %}
-                    <div class="form-check">
-                        <input
-                            type="radio"
-                            id="payment_{{ payment.id }}"
-                            name="payment"
-                            value="{{ payment.id }}"
-                            class="form-check-input"
-                            {% if payment.is_default or forloop.first %}checked{% endif %}
+            <!-- Coluna: Resumo do Pedido -->
+            <div class="col-md-5">
+                <h3>Resumo do pedido</h3>
+                <div class="order-summary p-3 border rounded">
+                    {% for item in cart_items %}
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <img
+                            src="{{ item.product.image.url }}"
+                            alt="{{ item.product.name }}"
+                            class="img-fluid"
+                            style="width: 60px;"
                         >
-                        <label for="payment_{{ payment.id }}" class="form-check-label">
-                            <strong>{{ payment.payment_type }}</strong><br>
-                            {% if payment.payment_type == 'Cartão de Crédito' or payment.payment_type == 'Cartão de Débito' %}
-                                Nome no cartão: {{ payment.card_holder_name }}<br>
-                                Número: **** **** **** {{ payment.card_number|slice:"-4:" }}<br>
-                                Expira em: {{ payment.expiration_date|date:"m/Y" }}
-                            {% endif %}
-                        </label>
+                        <div>
+                            <p class="mb-1">{{ item.product.name }}</p>
+                            <small>Qtd: {{ item.quantity }}</small>
+                        </div>
+                        <p>R${{ item.product.price|floatformat:2 }}</p>
                     </div>
-                    {% empty %}
-                    <p class="text-muted">Você ainda não tem métodos de pagamento cadastrados.</p>
                     {% endfor %}
-                    <a href="{% url 'add_payment' %}" class="btn btn-outline-primary w-100 mt-3">Adicionar novo método de pagamento</a>
-                </div>
-
-                <!-- Botão de Finalizar -->
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary px-5">Finalizar Pedido</button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Coluna: Resumo do Pedido -->
-        <div class="col-md-5">
-            <h3>Resumo do pedido</h3>
-            <div class="order-summary p-3 border rounded">
-                {% for item in cart_items %}
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <img
-                        src="{{ item.product.image.url }}"
-                        alt="{{ item.product.name }}"
-                        class="img-fluid"
-                        style="width: 60px;"
-                    >
-                    <div>
-                        <p class="mb-1">{{ item.product.name }}</p>
-                        <small>Qtd: {{ item.quantity }}</small>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <strong>Total</strong>
+                        <strong>R${{ total_price|floatformat:2 }}</strong>
                     </div>
-                    <p>R${{ item.product.price|floatformat:2 }}</p>
-                </div>
-                {% endfor %}
-                <hr>
-                <div class="d-flex justify-content-between">
-                    <strong>Total</strong>
-                    <strong>R${{ total_price|floatformat:2 }}</strong>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}

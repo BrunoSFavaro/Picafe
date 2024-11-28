@@ -154,12 +154,31 @@ def checkout_payment(request):
 
     payment_methods = UserPayments.objects.filter(user=request.user)
 
+    # Recuperar os valores do endereço e transportadora enviados na etapa anterior
+    address_id = request.POST.get('address')
+    carrier_id = request.POST.get('carrier')
+
+    # Verificar se os valores foram passados; caso contrário, mostrar erro ou redirecionar
+    if not address_id or not carrier_id:
+        messages.error(request, "Por favor, selecione um endereço e uma transportadora antes de continuar.")
+        return redirect('checkout')
+
+    # Buscar os objetos para exibição no template
+    address = get_object_or_404(UserAddress, id=address_id, user=request.user)
+    carrier = get_object_or_404(Carrier, id=carrier_id)
+
+    # Adicionar ao contexto
     context = {
-        'cart_item': cart_items,
+        'cart_items': cart_items,
         'total_price': total_price,
-        'payment_methods': payment_methods
+        'payment_methods': payment_methods,
+        'address': address,
+        'carrier': carrier,
     }
+
+    # Renderizar o template
     return render(request, 'pages/checkout_payment.html', context)
+
 
 def finalize_cart(request):
     if not request.user.is_authenticated:
