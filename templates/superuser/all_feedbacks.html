@@ -1,0 +1,48 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+{% if messages %}
+    <ul class="messages list-unstyled d-flex flex-column align-items-center">
+        {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} w-50 text-center rounded-pill py-2">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Feedbacks</h1>
+    {% if feedbacks %}
+        <table class="table table-bordered table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>Comentário</th>
+                    <th>Data de Criação</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for feedback in feedbacks %}
+                    <tr>
+                        <td>{{ feedback.user.username|default:"Anônimo" }}</td>
+                        <td>{{ feedback.feedback_text }}</td>
+                        <td>{{ feedback.created_at|date:"d/m/Y H:i" }}</td>
+                        <td>{{ feedback.status|default:"Pendente" }}</td>
+                        <td>
+                            <a href="#" class="btn btn-primary btn-sm">Visualizar</a>
+                            <a href="{% url 'delete_feedback' feedback.id %}" class="btn btn-danger btn-sm">Excluir</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center">Nenhum feedback recebido ainda.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

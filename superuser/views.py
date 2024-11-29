@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
 from .models import Carrier, Discount
+from User.models import Feedback
 from pages.models import Category, Product
 from .forms import ProductForm, CategoryForm, CarrierForm, DiscountForm
 
@@ -182,3 +183,10 @@ def delete_discount(request, discount_id):
     discount.delete()
     messages.warning(request, "Cupom de desconto removido do sistema.")
     return redirect('discounts')
+
+@staff_member_required
+def all_feedbacks(request):
+    feedbacks = Feedback.objects.all().order_by('-created_at')
+    return render(request, 'superuser/all_feedbacks.html', {
+        'feedbacks': feedbacks
+    })
