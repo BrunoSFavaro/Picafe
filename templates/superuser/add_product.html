@@ -28,10 +28,18 @@
                 <label for="id_stock_quantity" class="form-label">Quantidade em Estoque</label>
                 <input type="number" name="stock_quantity" id="id_stock_quantity" class="form-control" placeholder="Quantidade disponível">
             </div>
+            <div class="mb-3 text-start">
+                <label for="id_category" class="form-label">Categoria</label>
+                <select name="category" id="id_category" class="form-control">
+                    <option value="" selected disabled>Selecione uma categoria</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary w-100">Adicionar Produto</button>
         </form>
     </div>
 </div>
-
 
 {% endblock %}

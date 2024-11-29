@@ -29,8 +29,10 @@ def add_product(request):
             return redirect('admin_dashboard')
     else:
         form = ProductForm()
+    categories = Category.objects.all()
     return render(request, 'superuser/add_product.html', {
-        'form': form
+        'form': form,
+        'categories': categories
     })
 
 @staff_member_required
