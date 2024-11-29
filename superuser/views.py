@@ -4,7 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
 from .models import Carrier, Discount
 from User.models import Feedback
-from pages.models import Category, Product
+from pages.models import Category, Product, Order, Historic
 from .forms import ProductForm, CategoryForm, CarrierForm, DiscountForm
 
 # Create your views here.
@@ -189,4 +189,12 @@ def all_feedbacks(request):
     feedbacks = Feedback.objects.all().order_by('-created_at')
     return render(request, 'superuser/all_feedbacks.html', {
         'feedbacks': feedbacks
+    })
+
+
+@staff_member_required
+def all_orders(request):
+    orders = Order.objects.all().order_by('-created_at')
+    return render(request, "superuser/all_orders.html", {
+        'orders': orders
     })

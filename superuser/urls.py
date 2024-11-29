@@ -19,5 +19,6 @@ urlpatterns = [
     path('discounts/add/', views.add_discount, name="add_discount"),
     path('discounts/edit/<int:discount_id>/', views.edit_discount, name="edit_discount"),
     path('discount/delete/<int:discount_id>/', views.delete_discount, name="delete_discount"),
-    path('allfeedbacks/', views.all_feedbacks, name="all_feedbacks")
+    path('allfeedbacks/', views.all_feedbacks, name="all_feedbacks"),
+    path('allorders/', views.all_orders, name="all_orders")
 ]
