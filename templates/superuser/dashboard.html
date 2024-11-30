@@ -9,6 +9,7 @@
         <tr>
             <th class="col-1">Imagem</th>
             <th class="col-1">Nome</th>
+            <th class="col-1">Categoria</th>
             <th class="col-1">Preço</th>
             <th class="col-1">Estoque</th>
             <th class="col-1">Ações</th>
@@ -19,6 +20,7 @@
         <tr>
             <td class="pt-5"><img src="{{ product.image.url }}" alt="{{ item.product.name }}" width="100"></td>
             <td class="pt-5">{{ product.name }}</td>
+            <td class="pt-5">{{ product.category }}</td>
             <td class="pt-5">{{ product.price }}</td>
             <td class="pt-5">{{ product.stock_quantity}}</td>
             <td class="pt-5">

@@ -45,9 +45,11 @@ def edit_product(request, product_id):
             return redirect('admin_dashboard')
     else:
         form = ProductForm(instance=product)
+    categories = Category.objects.all()
     return render(request, 'superuser/edit_product.html', {
         'form': form,
-        'product': product
+        'product': product,
+        'categories': categories
     })
 
 @staff_member_required
