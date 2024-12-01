@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Cart, CartItem, Historic, Order, Wishlist
 from User.models import UserAddress, UserPayments
-from superuser.models import Carrier
+from superuser.models import Carrier, Discount
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -146,6 +146,27 @@ def checkout(request):
         'carriers': carriers,
     }
     return render(request, 'pages/checkout.html', context)
+
+def apply_discount(request):
+    if request.method == "POST":
+        coupon_code = request.POST.get('coupon', '').strip()
+        user_cart = CartItem.objects.filter(user=request.user)
+
+    # Verifica se o cupom existe e está ativo
+    try:
+        coupon = Discount.objects.get(code=coupon_code, is_active=True)
+    except Discount.DoesNotExist:
+        messages.error(request, "Cupom inválido ou expirado.")
+        return redirect('checkout')
+
+    # Associa o cupom aos itens do carrinho
+    for item in user_cart:
+        item.discount = coupon
+        item.save()
+
+    messages.success(request, f"Cupom '{coupon_code}' aplicado com sucesso!")
+    return redirect('checkout')
+
 
 def checkout_payment(request):
     cart_items = CartItem.objects.filter(user=request.user)

@@ -96,6 +96,12 @@
                     <strong>R${{ total_price|floatformat:2 }}</strong>
                 </div>
             </div>
+            <form method="POST" action="{% url 'apply_discount' %}">
+                {% csrf_token %}
+                <label for="coupon" class="mt-5">Código do cupom:</label>
+                <input type="text" id="coupon" name="coupon" placeholder="Digite o cupom">
+                <button type="submit">Aplicar</button>
+            </form>            
         </div>
     </div>
 </div>
