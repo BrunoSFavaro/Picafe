@@ -132,20 +132,36 @@ def checkout(request):
     # Recuperar itens do carrinho do usuário logado
     cart_items = CartItem.objects.filter(user=request.user)
     
-    # Calcular o total
-    total_price = sum(item.product.price * item.quantity for item in cart_items)
-    
+    # Inicializar o total
+    total_price = 0
+
+    # Calcular o total considerando descontos (se houver)
+    for item in cart_items:
+        product_price = item.product.price * item.quantity  # Preço sem desconto
+        
+        # Verificar se há um cupom de desconto aplicado
+        if item.discount:
+            if item.discount.discount_type == 'fixed':  # Desconto fixo
+                product_price -= item.discount.value  # Subtrair valor fixo do preço
+            elif item.discount.discount_type == 'percentage':  # Desconto percentual
+                product_price -= (product_price * item.discount.value / 100)  # Subtrair valor percentual do preço
+        
+        total_price += product_price  # Atualizar o total geral
+
     # Obter endereços e transportadoras
     user_addresses = UserAddress.objects.filter(user=request.user)
     carriers = Carrier.objects.all()
-    
+
+    # Contexto para o template
     context = {
         'cart_items': cart_items,
-        'total_price': total_price,
+        'total_price': total_price,  # Total atualizado com desconto
         'user_addresses': user_addresses,
         'carriers': carriers,
     }
+
     return render(request, 'pages/checkout.html', context)
+
 
 def apply_discount(request):
     if request.method == "POST":
@@ -154,7 +170,7 @@ def apply_discount(request):
 
     # Verifica se o cupom existe e está ativo
     try:
-        coupon = Discount.objects.get(code=coupon_code, is_active=True)
+        coupon = Discount.objects.get(code=coupon_code, active=True)
     except Discount.DoesNotExist:
         messages.error(request, "Cupom inválido ou expirado.")
         return redirect('checkout')
@@ -171,7 +187,23 @@ def apply_discount(request):
 def checkout_payment(request):
     cart_items = CartItem.objects.filter(user=request.user)
 
-    total_price = sum(item.product.price * item.quantity for item in cart_items)
+    # Inicializar o total_price com 0
+    total_price = 0
+
+    # Calcular o preço total levando em conta os descontos
+    for item in cart_items:
+        # Preço base do produto
+        product_price = item.product.price * item.quantity
+
+        # Verificar se há um desconto aplicado ao item
+        if item.discount:
+            if item.discount.discount_type == 'fixed':  # Desconto fixo
+                product_price -= item.discount.value
+            elif item.discount.discount_type == 'percentage':  # Desconto percentual
+                product_price -= (product_price * item.discount.value / 100)
+
+        # Somar o preço ajustado ao total_price
+        total_price += product_price
 
     payment_methods = UserPayments.objects.filter(user=request.user)
 
@@ -191,7 +223,7 @@ def checkout_payment(request):
     # Adicionar ao contexto
     context = {
         'cart_items': cart_items,
-        'total_price': total_price,
+        'total_price': total_price,  # Total com desconto aplicado
         'payment_methods': payment_methods,
         'address': address,
         'carrier': carrier,
@@ -199,6 +231,7 @@ def checkout_payment(request):
 
     # Renderizar o template
     return render(request, 'pages/checkout_payment.html', context)
+
 
 
 def finalize_cart(request):
@@ -218,29 +251,42 @@ def finalize_cart(request):
         carrier_id = request.POST.get('carrier')
         payment_id = request.POST.get('payment')
 
-        # Verificar se o endereço e transportadora foram selecionados
+        # Verificar se o endereço, transportadora e forma de pagamento foram selecionados
         if not address_id or not carrier_id or not payment_id:
             return render(request, 'pages/checkout_payment.html', {
-            'error': 'Por favor, selecione um endereço, um método de entrega e um método de pagamento.',
-            'cart_items': cart_items,
-            'user_addresses': UserAddress.objects.filter(user=request.user),
-            'carriers': Carrier.objects.all(),
-            'payment_methods': UserPayments.objects.filter(user=request.user),
-            'total_price': sum(item.product.price * item.quantity for item in cart_items),
-        })
+                'error': 'Por favor, selecione um endereço, um método de entrega e um método de pagamento.',
+                'cart_items': cart_items,
+                'user_addresses': UserAddress.objects.filter(user=request.user),
+                'carriers': Carrier.objects.all(),
+                'payment_methods': UserPayments.objects.filter(user=request.user),
+                'total_price': sum(item.product.price * item.quantity for item in cart_items),
+            })
 
-        # Validar o endereço e a transportadora
+        # Validar o endereço, transportadora e pagamento
         address = get_object_or_404(UserAddress, id=address_id, user=request.user)
         carrier = get_object_or_404(Carrier, id=carrier_id)
         payment = get_object_or_404(UserPayments, id=payment_id, user=request.user)
 
-        # Calcular o preço total
-        total_price = sum(item.product.price * item.quantity for item in cart_items)
+        # Calcular o preço total levando em conta o desconto nos itens
+        total_price = 0
+        for item in cart_items:
+            # Preço base do produto
+            product_price = item.product.price * item.quantity
+
+            # Verificar se há um desconto aplicado ao item
+            if item.discount:
+                if item.discount.discount_type == 'fixed':  # Desconto fixo
+                    product_price -= item.discount.value
+                elif item.discount.discount_type == 'percentage':  # Desconto percentual
+                    product_price -= (product_price * item.discount.value / 100)
+
+            # Somar o preço ajustado ao total_price
+            total_price += product_price
 
         # Criar o pedido
         order = Order.objects.create(
             user=request.user,
-            total_price=total_price,
+            total_price=total_price,  # Preço total com o desconto aplicado
             address=address,
             carrier=carrier,
             payment=payment
@@ -276,6 +322,7 @@ def finalize_cart(request):
         return render(request, 'pages/finalize.html', {
             'order': order
         })
+
 
     # Se for um GET, renderiza o checkout normalmente
     user_addresses = UserAddress.objects.filter(user=request.user)

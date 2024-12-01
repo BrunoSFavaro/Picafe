@@ -2,6 +2,16 @@
 
 {% block body %}
 
+{% if messages %}
+<ul class="messages list-unstyled d-flex flex-column align-items-center">
+    {% for message in messages %}
+        <li class="alert alert-{{ message.tags }} w-50 text-center rounded-pill py-2">
+            {{ message }}
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <div class="container mt-4">
     <h2 class="text-center mb-4">Checkout</h2>
 
