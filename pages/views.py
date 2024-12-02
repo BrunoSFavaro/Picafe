@@ -166,6 +166,9 @@ def checkout(request):
     user_addresses = UserAddress.objects.filter(user=request.user)
     carriers = Carrier.objects.all()
 
+    # Verificar se o usuário tem um cupom aplicado
+    applied_coupon = user_cart.discount  # Assume que 'discount' é um campo de FK
+
     # Contexto para o template
     context = {
         'cart': user_cart,  # Passa o carrinho completo para o template
@@ -173,6 +176,7 @@ def checkout(request):
         'total_price': user_cart.total_price,  # Total atualizado com desconto
         'user_addresses': user_addresses,
         'carriers': carriers,
+        'applied_coupon': applied_coupon,  # Passa o cupom aplicado, se houver
     }
 
     return render(request, 'pages/checkout.html', context)
@@ -207,6 +211,22 @@ def apply_discount(request):
 
     # Caso o método não seja POST
     messages.error(request, "Método inválido.")
+    return redirect('checkout')
+
+def remove_discount(request):
+    # Recuperar o carrinho do usuário logado com status 'open'
+    try:
+        user_cart = Cart.objects.get(user=request.user, status='open')
+        user_cart.discount = None  # Remover o cupom
+        user_cart.save()
+
+        # Recalcular o total após a remoção do cupom
+        user_cart.calc_total_price()
+
+        messages.success(request, "Cupom removido com sucesso.")
+    except Cart.DoesNotExist:
+        messages.error(request, "Erro ao remover o cupom.")
+
     return redirect('checkout')
 
 def checkout_payment(request):

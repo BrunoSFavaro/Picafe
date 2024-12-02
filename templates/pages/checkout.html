@@ -27,7 +27,6 @@
     <div class="row">
         <!-- Coluna: Endereço de entrega e método -->
         <div class="col-md-7">
-            <!-- Formulário de envio -->
             <form method="POST" action="{% url 'checkout_payment' %}">
                 {% csrf_token %}
                 <!-- Endereço de entrega -->
@@ -74,7 +73,6 @@
                     {% endfor %}
                 </div>
 
-                <!-- Botão Próximo -->
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-primary px-5">Próximo</button>
                 </div>
@@ -106,14 +104,34 @@
                     <strong>R${{ total_price|floatformat:2 }}</strong>
                 </div>
             </div>
+
+            <!-- Aplicar cupom -->
             <form method="POST" action="{% url 'apply_discount' %}">
                 {% csrf_token %}
                 <label for="coupon" class="mt-5">Código do cupom:</label>
                 <input type="text" id="coupon" name="coupon" placeholder="Digite o cupom">
                 <button type="submit">Aplicar</button>
-            </form>            
+            </form>
+
+            <!-- Exibir cupom aplicado -->
+            {% if applied_coupon %}
+            <div class="applied-coupon mt-3 p-3 border rounded order-summary">
+                <div class="d-flex justify-content-between align-items-center">
+                    <p>
+                        <strong>{{ applied_coupon.code }}</strong>: 
+                        {% if applied_coupon.discount_type == 'percentage' %}
+                            Desconto: {{ applied_coupon.value }}%
+                        {% else %}
+                            Desconto: R${{ applied_coupon.value|floatformat:2 }}
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'remove_discount' %}" class="text-danger">X</a>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
+
 
 {% endblock %}
