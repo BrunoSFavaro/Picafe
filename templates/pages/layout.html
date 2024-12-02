@@ -65,15 +65,15 @@
 
     <script>
         document.querySelector('.dropbtn').addEventListener('click', function(event) {
-        const dropdownContent = document.querySelector('.dropdown-content');
-        dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
-        event.stopPropagation();
-    });
+            const dropdownContent = document.querySelector('.dropdown-content');
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+            event.stopPropagation();
+        });
 
-    window.addEventListener('click', function() {
-        const dropdownContent = document.querySelector('.dropdown-content');
-        dropdownContent.style.display = 'none';
-    });
+        window.addEventListener('click', function() {
+            const dropdownContent = document.querySelector('.dropdown-content');
+            dropdownContent.style.display = 'none';
+        });
     </script>
 
 </body>

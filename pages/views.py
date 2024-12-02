@@ -128,9 +128,13 @@ def remove_from_cart(request, item_id):
             request.session['cart'] = cart
     return redirect('view_cart')
 
+
 def checkout(request):
     # Recuperar itens do carrinho do usuário logado
     cart_items = CartItem.objects.filter(user=request.user)
+    if len(cart_items) == 0:
+        messages.warning(request, "Por favor, adicione ao menos um produto antes de finalizar.")
+        return redirect('view_cart')
     
     # Inicializar o total
     total_price = 0
