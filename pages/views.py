@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Cart, CartItem, Historic, Order, Wishlist
-from User.models import UserAddress, UserPayments
+from User.models import UserAddress, UserPayments, Feedback
 from superuser.models import Carrier, Discount
 from django.contrib.auth.decorators import login_required
 
@@ -29,9 +29,22 @@ def order_details(request, order_id):
     })
 
 def product(request, product_id):
-    product = Product.objects.get(id=product_id)
+    # Pegar o produto
+    product = get_object_or_404(Product, id=product_id)
+    
+    # Pegar os feedbacks associados ao produto
+    feedbacks = Feedback.objects.filter(product=product)
+    
+    # Calcular a média das notas
+    if feedbacks.exists():
+        average_rating = sum(feedback.rating for feedback in feedbacks) / feedbacks.count()
+    else:
+        average_rating = None  # Caso não haja feedbacks
+    
     return render(request, "pages/product.html", {
         "product": product,
+        "feedbacks": feedbacks,
+        "average_rating": average_rating,  # Passar a média das notas
     })
 
 def products(request):

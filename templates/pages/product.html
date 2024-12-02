@@ -1,6 +1,7 @@
 {% extends "pages/layout.html" %} 
 
 {% block body %}
+
 <div class="product-page">
     <div class="product-image-container">
         <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
@@ -29,5 +30,24 @@
     <h1>Descrição</h1>
     {{ product.description }}
 </p>
+
+<!-- Exibir a média de notas -->
+{% if average_rating %}
+    <p><strong>Média das avaliações:</strong> {{ average_rating|floatformat:1 }}</p>
+{% else %}
+    <p><strong>Este produto ainda não tem avaliações.</strong></p>
+{% endif %}
+
+<!-- Exibir feedbacks -->
+<h3>Feedbacks dos clientes:</h3>
+{% for feedback in feedbacks %}
+    <div class="feedback">
+        <p><strong>{{ feedback.user.username }}</strong> - Nota: {{ feedback.rating }}/5</p>
+        <p>{{ feedback.feedback_text }}</p>
+        <p><small>Publicado em: {{ feedback.created_at|date:"d/m/Y" }}</small></p>
+    </div>
+{% empty %}
+    <p>Este produto ainda não tem feedbacks.</p>
+{% endfor %}
 
 {% endblock %}
