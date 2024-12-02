@@ -67,10 +67,12 @@ def view_cart(request):
 
 def add_to_cart(request, product_id):
     if not request.user.is_authenticated:
+        # Se o usuário não estiver autenticado, usa a sessão
         cart = request.session.get('cart', {})
         product_id_str = str(product_id)
         product = Product.objects.get(id=product_id)
 
+        # Verifica se a quantidade solicitada não excede o estoque
         if product.stock_quantity > cart.get(product_id_str, 0):
             if product_id_str in cart:
                 cart[product_id_str] += 1
@@ -84,18 +86,33 @@ def add_to_cart(request, product_id):
         return redirect('view_cart')
 
     else:
+        # Caso o usuário esteja autenticado
         product = Product.objects.get(id=product_id)
-        cart_item, created = CartItem.objects.get_or_create(product=product, user=request.user)
+
+        # Tenta obter o carrinho aberto do usuário
+        user_cart = Cart.objects.filter(user=request.user, status='open').first()
+
+        if not user_cart:
+            # Se o carrinho não existir, cria um novo carrinho
+            user_cart = Cart.objects.create(user=request.user, status='open')
+
+        # Tenta obter ou criar o item no carrinho
+        cart_item, created = CartItem.objects.get_or_create(product=product, user=request.user, cart=user_cart)
 
         total_quantity_in_cart = cart_item.quantity + 1
 
+        # Verifica se a quantidade solicitada não excede o estoque
         if product.stock_quantity >= total_quantity_in_cart:
             cart_item.quantity += 1
             cart_item.save()
         else:
             messages.error(request, f"Quantidade solicitada excede o estoque disponível para o produto {product.name}. Estoque disponível: {product.stock_quantity}")
         
+        # Recalcula o total do carrinho após adicionar o item
+        user_cart.calc_total_price()
+        
         return redirect('view_cart')
+
     
 def subtract_from_cart(request, product_id):
     if request.user.is_authenticated:
@@ -130,27 +147,20 @@ def remove_from_cart(request, item_id):
 
 
 def checkout(request):
-    # Recuperar itens do carrinho do usuário logado
-    cart_items = CartItem.objects.filter(user=request.user)
-    if len(cart_items) == 0:
+    # Recuperar o carrinho do usuário logado com status 'open'
+    try:
+        user_cart = Cart.objects.get(user=request.user, status='open')
+    except Cart.DoesNotExist:
+        messages.error(request, "Você não tem um carrinho ativo.")
+        return redirect('view_cart')
+
+    # Recalcular o total do carrinho (incluindo descontos, se houver)
+    user_cart.calc_total_price()
+
+    # Verificar se o carrinho está vazio
+    if user_cart.items.count() == 0:
         messages.warning(request, "Por favor, adicione ao menos um produto antes de finalizar.")
         return redirect('view_cart')
-    
-    # Inicializar o total
-    total_price = 0
-
-    # Calcular o total considerando descontos (se houver)
-    for item in cart_items:
-        product_price = item.product.price * item.quantity  # Preço sem desconto
-        
-        # Verificar se há um cupom de desconto aplicado
-        if item.discount:
-            if item.discount.discount_type == 'fixed':  # Desconto fixo
-                product_price -= item.discount.value  # Subtrair valor fixo do preço
-            elif item.discount.discount_type == 'percentage':  # Desconto percentual
-                product_price -= (product_price * item.discount.value / 100)  # Subtrair valor percentual do preço
-        
-        total_price += product_price  # Atualizar o total geral
 
     # Obter endereços e transportadoras
     user_addresses = UserAddress.objects.filter(user=request.user)
@@ -158,8 +168,9 @@ def checkout(request):
 
     # Contexto para o template
     context = {
-        'cart_items': cart_items,
-        'total_price': total_price,  # Total atualizado com desconto
+        'cart': user_cart,  # Passa o carrinho completo para o template
+        'cart_items': user_cart.items.all(),  # Itens do carrinho
+        'total_price': user_cart.total_price,  # Total atualizado com desconto
         'user_addresses': user_addresses,
         'carriers': carriers,
     }
@@ -167,26 +178,36 @@ def checkout(request):
     return render(request, 'pages/checkout.html', context)
 
 
+
 def apply_discount(request):
     if request.method == "POST":
         coupon_code = request.POST.get('coupon', '').strip()
-        user_cart = CartItem.objects.filter(user=request.user)
+        
+        # Recuperar o carrinho aberto do usuário
+        try:
+            user_cart = Cart.objects.get(user=request.user, status='open')
+        except Cart.DoesNotExist:
+            messages.error(request, "Carrinho não encontrado.")
+            return redirect('checkout')
 
-    # Verifica se o cupom existe e está ativo
-    try:
-        coupon = Discount.objects.get(code=coupon_code, active=True)
-    except Discount.DoesNotExist:
-        messages.error(request, "Cupom inválido ou expirado.")
+        # Verificar se o cupom existe e está ativo
+        try:
+            coupon = Discount.objects.get(code=coupon_code, active=True)
+        except Discount.DoesNotExist:
+            messages.error(request, "Cupom inválido ou expirado.")
+            return redirect('checkout')
+
+        # Associar o cupom ao carrinho
+        user_cart.discount = coupon
+        user_cart.calc_total_price()  # Atualizar o total do carrinho com o desconto
+        user_cart.save()
+
+        messages.success(request, f"Cupom '{coupon_code}' aplicado com sucesso!")
         return redirect('checkout')
 
-    # Associa o cupom aos itens do carrinho
-    for item in user_cart:
-        item.discount = coupon
-        item.save()
-
-    messages.success(request, f"Cupom '{coupon_code}' aplicado com sucesso!")
+    # Caso o método não seja POST
+    messages.error(request, "Método inválido.")
     return redirect('checkout')
-
 
 def checkout_payment(request):
     cart_items = CartItem.objects.filter(user=request.user)
