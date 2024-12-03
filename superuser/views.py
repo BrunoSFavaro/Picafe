@@ -202,3 +202,7 @@ def all_orders(request):
     return render(request, "superuser/all_orders.html", {
         'orders': orders
     })
+
+@staff_member_required
+def user_options(request):
+    return render(request, 'superuser/useroptions.html')
