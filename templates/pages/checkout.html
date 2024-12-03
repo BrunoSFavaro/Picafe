@@ -108,9 +108,9 @@
             <!-- Aplicar cupom -->
             <form method="POST" action="{% url 'apply_discount' %}">
                 {% csrf_token %}
-                <label for="coupon" class="mt-5">Código do cupom:</label>
-                <input type="text" id="coupon" name="coupon" placeholder="Digite o cupom">
-                <button type="submit">Aplicar</button>
+                <label for="coupon" class="mt-5" id="label-cupom">Código do cupom</label>
+                <input type="text" id="input-cupom" name="coupon" placeholder="Digite o cupom" class="form-control p-3">
+                <button type="submit" class="btn btn-primary" id="btn-cupom">Aplicar</button>
             </form>
 
             <!-- Exibir cupom aplicado -->

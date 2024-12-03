@@ -227,7 +227,7 @@ main {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #733426;
-    padding: 0.6rem 0;
+    padding: 0;
 }
 
 .product-price {
@@ -278,8 +278,8 @@ main {
     padding: 10px;
     border-radius: 50%;
     font-size: 14px;
-    width: 30px;
-    height: 30px;
+    width: 90px;
+    height: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -441,3 +441,22 @@ footer {
     margin-top: auto;
 }
 
+/*adminprofile.html*/
+.dashbox {
+    background-color: #EBBB92;
+    border-radius: 20px;
+}
+
+#btn-cupom {
+    margin-top: 20px;
+}
+
+#label-cupom {
+    font-size: 1.75rem;
+}
+
+#total-value {
+    padding-top: 1.5rem;
+    font-size: 1.4rem;
+    font-weight: bolder;
+}

@@ -33,9 +33,9 @@
         {% endfor %}
     </div>
 
-    <p>Valor total: R${{ total_price }}</p>
+    <p id="total-value">Valor total: R${{ total_price }}</p>
 
-    <a href="{% url 'products' %}">Continuar comprando</a>
-    <a href="{% url 'checkout' %}">Finalizar</a>
+    <a href="{% url 'products' %}" class="btn btn-primary px-5">Continuar comprando</a>
+    <a href="{% url 'checkout' %}" class="btn btn-primary px-5">Finalizar</a>
 
 {% endblock %}

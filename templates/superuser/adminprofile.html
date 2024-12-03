@@ -12,13 +12,13 @@
 {% endif %}
 
 <!-- Atalhos -->
-<div class="profile-shortcuts mt-5">
+<div class="profile-shortcuts mt-5 dashboard">
     <h3 class=""><i class="bi bi-dash-circle"></i> Atalhos</h3>
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
         <!-- Cartões -->
         <div class="col">
             <a href="{% url 'admin_dashboard' %}">
-                <div class="shortcut-card p-3 rounded text-center">
+                <div class="shortcut-card p-3 text-center dashbox">
                     <i class="bi bi-bag-fill fs-1 text-danger"></i>
                     <h5 class="mt-3">Gerenciar Produtos</h5>
                     <p class="text-muted">Adicione, edite ou remova produtos do catálogo de vendas.</p>
@@ -27,16 +27,16 @@
         </div>
         <div class="col">
             <a href="{% url 'categories' %}">
-                <div class="shortcut-card p-3 rounded text-center">
+                <div class="shortcut-card p-3 dashbox text-center">
                     <i class="bi bi-bag-fill fs-1 text-danger"></i>
                     <h5 class="mt-3">Categorias de Produtos</h5>
-                    <p class="text-muted">Organize e edite categorias para facilitar a navegação dos clientes.</p>
+                    <p class="text-muted">Organize e edite categorias para facilitar a navegação.</p>
                 </div>
             </a>
         </div>
         <div class="col">
             <a href="{% url 'all_orders' %}">
-                <div class="shortcut-card p-3 rounded text-center">
+                <div class="shortcut-card p-3 dashbox text-center">
                     <i class="bi bi-geo-alt-fill fs-1 text-danger"></i>
                     <h5 class="mt-3">Gerenciar Pedidos</h5>
                     <p class="text-muted">Veja e gerencie pedidos realizados pelos clientes.</p>
@@ -45,16 +45,16 @@
         </div>
         <div class="col">
             <a href="#">
-                <div class="shortcut-card p-3 rounded text-center">
+                <div class="shortcut-card p-3 dashbox text-center">
                     <i class="bi bi-credit-card-2-back-fill fs-1 text-danger"></i>
                     <h5 class="mt-3">Usuários</h5>
-                    <p class="text-muted">Acompanhe os registros, edite permissões ou desative contas de usuários.</p>
+                    <p class="text-muted">Edite permissões ou desative contas de usuários.</p>
                 </div>
             </a>
         </div>
         <div class="col">
             <a href="#">
-                <div class="shortcut-card p-3 rounded text-center">
+                <div class="shortcut-card p-3 dashbox text-center">
                     <i class="bi bi-heart-fill fs-1 text-danger"></i>
                     <h5 class="mt-3">Relatórios</h5>
                     <p class="text-muted">Visualize estatísticas de vendas, estoque e desempenho.</p>
@@ -63,7 +63,7 @@
         </div>
         <div class="col">
             <a href="{% url 'discounts' %}">
-                <div class="shortcut-card p-3 rounded text-center">
+                <div class="shortcut-card p-3 dashbox text-center">
                     <i class="bi bi-chat-left-dots-fill fs-1 text-danger"></i>
                     <h5 class="mt-3">Cupons de Desconto</h5>
                     <p class="text-muted">Crie, edite ou remova cupons promocionais.</p>
@@ -72,7 +72,7 @@
         </div>
         <div class="col">
             <a href="{% url 'all_feedbacks' %}">
-                <div class="shortcut-card p-3 rounded text-center">
+                <div class="shortcut-card p-3 dashbox text-center">
                     <i class="bi bi-box-arrow-right fs-1 text-danger"></i>
                     <h5 class="mt-3">Feedback e Avaliações</h5>
                     <p class="text-muted">Modere e responda avaliações e feedbacks dos clientes.</p>
@@ -81,7 +81,7 @@
         </div>
         <div class="col">
             <a href="{% url 'carries' %}">
-                <div class="shortcut-card p-3 rounded text-center">
+                <div class="shortcut-card p-3 dashbox text-center">
                     <i class="bi bi-box-arrow-right fs-1 text-danger"></i>
                     <h5 class="mt-3">Gerenciar Transportadoras</h5>
                     <p class="text-muted">Adicione, edite ou remova transportadoras.</p>
@@ -90,7 +90,7 @@
         </div>
         <div class="col">
             <a href="{% url 'logout' %}">
-                <div class="shortcut-card p-3 rounded text-center">
+                <div class="shortcut-card p-3 dashbox text-center">
                     <i class="bi bi-box-arrow-right fs-1 text-danger"></i>
                     <h5 class="mt-3">Sair</h5>
                     <p class="text-muted">Encerrar sessão.</p>
