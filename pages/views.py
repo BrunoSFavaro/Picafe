@@ -33,7 +33,7 @@ def product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     
     # Pegar os feedbacks associados ao produto
-    feedbacks = Feedback.objects.filter(product=product)
+    feedbacks = Feedback.objects.filter(product=product).order_by('-created_at')
     
     # Calcular a média das notas
     if feedbacks.exists():

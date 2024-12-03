@@ -1,4 +1,6 @@
 {% extends "pages/layout.html" %} 
+{% load custom_filters %}
+
 
 {% block body %}
 
@@ -27,27 +29,33 @@
 </div>
 
 <p class="product-description">
-    <h1>Descrição</h1>
+    <h2>Descrição</h2>
     {{ product.description }}
 </p>
 
 <!-- Exibir a média de notas -->
-{% if average_rating %}
-    <p><strong>Média das avaliações:</strong> {{ average_rating|floatformat:1 }}</p>
-{% else %}
-    <p><strong>Este produto ainda não tem avaliações.</strong></p>
-{% endif %}
+<!-- Exibir a média de notas -->
+<div class="ratings">
+    <h3>Avaliação</h3>
+    {% if average_rating %}
+        <p><strong>Média das avaliações:</strong> {{ average_rating|floatformat:1 }} de 5</p>
+        <p><strong>{{ feedbacks.count }} avaliações</strong></p>
+    {% else %}
+        <p><strong>Este produto ainda não tem avaliações.</strong></p>
+    {% endif %}
+</div>
 
 <!-- Exibir feedbacks -->
 <h3>Feedbacks dos clientes:</h3>
 {% for feedback in feedbacks %}
     <div class="feedback">
-        <p><strong>{{ feedback.user.username }}</strong> - Nota: {{ feedback.rating }}/5</p>
+        <p><strong>{{ feedback.user.username }}</strong> - Nota: {{ feedback.rating }} de 5</p>
         <p>{{ feedback.feedback_text }}</p>
         <p><small>Publicado em: {{ feedback.created_at|date:"d/m/Y" }}</small></p>
     </div>
 {% empty %}
     <p>Este produto ainda não tem feedbacks.</p>
 {% endfor %}
+
 
 {% endblock %}
