@@ -477,11 +477,13 @@ footer {
 }
 
 .feedback {
-    background-color: #f9f9f9;
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-item {
+    background-color: #DDC293;
 }
 
 .feedback-header {
@@ -526,4 +528,12 @@ footer {
 .out-of-stock {
     color: red;
     font-weight: bold;
+}
+
+.ratings {
+    text-align: left;
+}
+
+.feedback .feedback-item p {
+    margin-bottom: 0.5rem;
 }
