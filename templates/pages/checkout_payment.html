@@ -89,13 +89,38 @@
                         <p>R${{ item.product.price|floatformat:2 }}</p>
                     </div>
                     {% endfor %}
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <strong>Subtotal:</strong>
+                        </div>
+                        <div>
+                            R${{ subtotal_price }} <!-- Valor descontado -->
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        {% if cart.discount %}
+                        <div>
+                            <strong>Cupom:</strong>
+                        </div>
+                        <div>
+                            {{ cart.discount.code }} <!-- Nome do cupom -->
+                        </div>
+                        <div>
+                            {% if cart.discount.discount_type == 'fixed' %}
+                            - R${{ cart.discount.value|floatformat:2 }} <!-- Valor descontado -->
+                            {% elif cart.discount.discount_type == 'percentage' %}
+                            - {{ cart.discount.value|floatformat:2 }}%
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
                     <hr>
                     <div class="d-flex justify-content-between">
                         <strong>Total</strong>
                         <strong>R${{ total_price|floatformat:2 }}</strong>
                     </div>
                 </div>
-            </div>
+            </div>            
         </div>
     </div>
 

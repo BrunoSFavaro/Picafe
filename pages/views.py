@@ -169,6 +169,7 @@ def checkout(request):
 
     # Recalcular o total do carrinho (incluindo descontos, se houver)
     user_cart.calc_total_price()
+    subtotal_price = sum(item.product.price * item.quantity for item in user_cart.items.all())
 
     # Verificar se o carrinho está vazio
     if user_cart.items.count() == 0:
@@ -187,6 +188,7 @@ def checkout(request):
         'cart': user_cart,  # Passa o carrinho completo para o template
         'cart_items': user_cart.items.all(),  # Itens do carrinho
         'total_price': user_cart.total_price,  # Total atualizado com desconto
+        'subtotal_price': subtotal_price,
         'user_addresses': user_addresses,
         'carriers': carriers,
         'applied_coupon': applied_coupon,  # Passa o cupom aplicado, se houver
@@ -255,6 +257,7 @@ def checkout_payment(request):
 
     # Usar o valor total calculado da model Cart
     total_price = user_cart.total_price
+    subtotal_price = sum(item.product.price * item.quantity for item in user_cart.items.all())
 
     # Recuperar os métodos de pagamento do usuário
     payment_methods = UserPayments.objects.filter(user=request.user)
@@ -275,7 +278,9 @@ def checkout_payment(request):
     # Adicionar ao contexto
     context = {
         'cart_items': cart_items,
-        'total_price': total_price,  # Total calculado pela model
+        'cart': user_cart,
+        'total_price': total_price,  # Total calculado pela model,
+        'subtotal_price': subtotal_price,
         'payment_methods': payment_methods,
         'address': address,
         'carrier': carrier,
