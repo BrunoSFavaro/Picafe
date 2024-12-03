@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.contrib.auth.models import User, Group
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
 from .models import Carrier, Discount
@@ -206,3 +207,17 @@ def all_orders(request):
 @staff_member_required
 def user_options(request):
     return render(request, 'superuser/useroptions.html')
+
+@staff_member_required
+def view_users(request):
+    users_list = User.objects.all()
+    return render(request, 'superuser/users.html', {
+        'users_list': users_list
+    })
+
+@staff_member_required
+def view_groups(request):
+    groups_list = Group.objects.all()
+    return render(request, 'superuser/groups.html', {
+        'groups_list': groups_list
+    })

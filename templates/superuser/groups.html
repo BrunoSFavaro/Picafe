@@ -1,0 +1,47 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+{% if messages %}
+    <ul class="messages list-unstyled d-flex flex-column align-items-center">
+        {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} w-50 text-center rounded-pill py-2">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Grupos</h1>
+    {% if groups_list %}
+        <table class="table table-bordered table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Permissões</th>
+                    <th>Membros</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups_list %}
+                <tr>
+                    <td>{{ group.name|default:"Anônimo" }}</td>
+                    <td>{{ group.permissions.count }} Permissões</td> <!-- Exibindo a contagem -->
+                    <td>{{ group.user_set.count }}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary btn-sm">Visualizar</a> <!-- Link para detalhes -->
+                        <a href="#" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center">Nenhum feedback recebido ainda.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

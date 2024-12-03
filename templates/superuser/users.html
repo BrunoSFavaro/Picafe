@@ -1,0 +1,52 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+{% if messages %}
+    <ul class="messages list-unstyled d-flex flex-column align-items-center">
+        {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} w-50 text-center rounded-pill py-2">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Usuários</h1>
+    {% if users_list %}
+        <table class="table table-bordered table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>E-mail</th>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>Admin</th>
+                    <th>Grupo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users_list %}
+                    <tr>
+                        <td>{{ user.username|default:"Anônimo" }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.is_staff|yesno:"Sim,Não" }}</td>
+                        <td>{{ user.groups }}</td>
+                        <td>
+                            <a href="#" class="btn btn-primary btn-sm">Visualizar</a>
+                            <a href="#" class="btn btn-danger btn-sm">Excluir</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center">Nenhum feedback recebido ainda.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

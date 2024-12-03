@@ -22,5 +22,6 @@ urlpatterns = [
     path('allfeedbacks/', views.all_feedbacks, name="all_feedbacks"),
     path('allorders/', views.all_orders, name="all_orders"),
     path('useroptions/', views.user_options, name="user_options"),
-    
+    path('useroptions/users', views.view_users, name="view_users"),
+    path('useroptions/groups', views.view_groups, name="view_groups"),
 ]
