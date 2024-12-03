@@ -19,6 +19,7 @@
             <thead>
                 <tr>
                     <th>Usuário</th>
+                    <th>Produto</th>
                     <th>Comentário</th>
                     <th>Data de Criação</th>
                     <th>Status</th>
@@ -29,6 +30,7 @@
                 {% for feedback in feedbacks %}
                     <tr>
                         <td>{{ feedback.user.username|default:"Anônimo" }}</td>
+                        <td>{{ feedback.product.name }}</td>
                         <td>{{ feedback.feedback_text }}</td>
                         <td>{{ feedback.created_at|date:"d/m/Y H:i" }}</td>
                         <td>{{ feedback.status|default:"Pendente" }}</td>

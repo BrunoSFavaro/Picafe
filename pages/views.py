@@ -243,26 +243,20 @@ def remove_discount(request):
     return redirect('checkout')
 
 def checkout_payment(request):
-    cart_items = CartItem.objects.filter(user=request.user)
+    # Recuperar o carrinho ativo do usuário
+    try:
+        user_cart = Cart.objects.get(user=request.user, status='open')
+    except Cart.DoesNotExist:
+        messages.error(request, "Você não tem um carrinho ativo.")
+        return redirect('view_cart')
 
-    # Inicializar o total_price com 0
-    total_price = 0
+    # Obter os itens do carrinho ativo
+    cart_items = user_cart.items.all()
 
-    # Calcular o preço total levando em conta os descontos
-    for item in cart_items:
-        # Preço base do produto
-        product_price = item.product.price * item.quantity
+    # Usar o valor total calculado da model Cart
+    total_price = user_cart.total_price
 
-        # Verificar se há um desconto aplicado ao item
-        if item.discount:
-            if item.discount.discount_type == 'fixed':  # Desconto fixo
-                product_price -= item.discount.value
-            elif item.discount.discount_type == 'percentage':  # Desconto percentual
-                product_price -= (product_price * item.discount.value / 100)
-
-        # Somar o preço ajustado ao total_price
-        total_price += product_price
-
+    # Recuperar os métodos de pagamento do usuário
     payment_methods = UserPayments.objects.filter(user=request.user)
 
     # Recuperar os valores do endereço e transportadora enviados na etapa anterior
@@ -281,7 +275,7 @@ def checkout_payment(request):
     # Adicionar ao contexto
     context = {
         'cart_items': cart_items,
-        'total_price': total_price,  # Total com desconto aplicado
+        'total_price': total_price,  # Total calculado pela model
         'payment_methods': payment_methods,
         'address': address,
         'carrier': carrier,
