@@ -91,8 +91,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'picafe',
-        'USER': 'joaosouza',
-        'PASSWORD': 'password',
+        'USER': 'brunao',
+        'PASSWORD': 'brunao',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
