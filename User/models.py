@@ -71,3 +71,16 @@ class Feedback(models.Model):
     def __str__(self):
         return f"{self.product} {self.user}'s feedback. Rating {self.rating}/5"
 
+
+class Message(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=50)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Mensagem"
+        verbose_name_plural = "Mensagens"
+
+    def __str__(self):
+        return f"{self.subject} - Mensagem de {self.user or 'Usuário Anônimo'}"
