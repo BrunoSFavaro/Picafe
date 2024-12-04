@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from .models import Profile, UserAddress, UserPayments, Feedback
+from .models import Profile, UserAddress, UserPayments, Feedback, Message
 from pages.models import Product
 from .forms import AddressForm, PaymentForm
 from datetime import datetime
@@ -315,3 +315,20 @@ def delete_feedback(request, feedback_id):
     feedback = get_object_or_404(Feedback, id=feedback_id)
     feedback.delete()
     return redirect('feedbacks')
+
+@login_required
+def user_messages(request):
+    user_messages = Message.objects.filter(user=request.user)
+    return render(request, "User/messages.html", {
+        'user_messages': user_messages
+    })
+
+@login_required
+def add_message(request):
+    if request.method == "POST":
+        subject = request.POST.get('subject')
+        text = request.POST.get('text')
+        if subject and text:  # Verifica se os campos estão preenchidos
+            Message.objects.create(user=request.user, subject=subject, text=text)
+            return redirect('user_messages')  # Redireciona para a lista de mensagens
+    return render(request, "User/add_message.html")

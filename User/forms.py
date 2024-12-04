@@ -1,5 +1,5 @@
 from django import forms
-from User.models import UserAddress, UserPayments
+from User.models import UserAddress, UserPayments, Message
 
 class AddressForm(forms.ModelForm):
     class Meta:
@@ -11,3 +11,7 @@ class PaymentForm(forms.ModelForm):
         model = UserPayments
         fields = ['payment_type', 'card_holder_name', 'card_number', 'expiration_date', 'is_default']
        
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['subject', 'text']

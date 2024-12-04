@@ -19,5 +19,7 @@ urlpatterns = [
     path("profile/feedbacks/", views.view_feedbacks, name="feedbacks"),
     path("profile/feedbacks/add/<int:product_id>", views.make_feedback, name="make_feedback"),
     path("profile/feedbacks/edit/<int:feedback_id>", views.edit_feedback, name="edit_feedback"),
-    path("profile/feedbacks/delete/<int:feedback_id>", views.delete_feedback, name="delete_feedback")
+    path("profile/feedbacks/delete/<int:feedback_id>", views.delete_feedback, name="delete_feedback"),
+    path("messages/", views.user_messages, name="user_messages"),
+    path("messages/add", views.add_message, name="add_message")
 ]

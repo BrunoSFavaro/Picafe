@@ -1,0 +1,25 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<div class="container text-center mt-4">
+    <h2><a href="{% url 'user_messages' %}" class="text-decoration-none">Voltar</a></h2>
+    <h1 class="mb-4">Enviar Nova Mensagem</h1>
+    <div class="d-flex justify-content-center">
+        <form method="post" class="w-50">
+            {% csrf_token %}
+            <div class="mb-3 text-start">
+                <label for="id_subject" class="form-label">Assunto</label>
+                <input type="text" name="subject" id="id_subject" class="form-control" placeholder="Digite o assunto" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="id_text" class="form-label">Mensagem</label>
+                <textarea name="text" id="id_text" class="form-control" rows="5" placeholder="Digite sua mensagem" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Enviar Mensagem</button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

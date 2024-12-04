@@ -34,7 +34,7 @@
                     {% if user.is_superuser %}
                     <li><a href="{% url 'admin_profile' %}">Dashboard</a></li>
                     {% else %}
-                    <li><a href="#">Contato</a></li>
+                    <li><a href="{% url 'user_messages' %}">Contato</a></li>
                     {% endif %}
                     <li><a href="{% url 'products' %}">Produtos</a></li>
                     {% if user.is_authenticated %}

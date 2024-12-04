@@ -1,0 +1,33 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+{% if messages %}
+    <ul class="messages list-unstyled d-flex flex-column align-items-center">
+        {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} w-50 text-center rounded-pill py-2">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<h1>Suas Mensagens</h1>
+
+<a href="{% url 'add_message' %}" class="btn btn-primary">Nova Mensagem</a>
+
+{% if user_messages %}
+    <ul>
+        {% for message in user_messages %}
+            <li>
+                <strong>{{ message.subject }}</strong> <br>
+                {{ message.text }} <br>
+                <em>Enviada em {{ message.created_at|date:"d/m/Y H:i" }}</em>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Você não tem nenhuma mensagem no momento.</p>
+{% endif %}
+
+{% endblock %}
