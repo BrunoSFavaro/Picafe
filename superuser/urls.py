@@ -24,4 +24,7 @@ urlpatterns = [
     path('useroptions/', views.user_options, name="user_options"),
     path('useroptions/users', views.view_users, name="view_users"),
     path('useroptions/groups', views.view_groups, name="view_groups"),
+    path('promotions/', views.view_promotions, name="view_promotions"),
+    path('promotions/add/', views.add_promotions, name="add_promotion"),
+    path('promotions/delete/<int:promotion_id>', views.delete_promotion, name="delete_promotion")
 ]

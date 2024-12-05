@@ -1,14 +1,14 @@
 from django.http import HttpResponse
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Cart, CartItem, Historic, Order, Wishlist
+from .models import Product, Cart, CartItem, Historic, Order, Wishlist, Promotions
 from User.models import UserAddress, UserPayments, Feedback
 from superuser.models import Carrier, Discount
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
-    featured_products = Product.objects.all()[:3] # Pega os 3 primeiros itens da lista
+    featured_products = Promotions.objects.all()[:3] # Pega os 3 primeiros itens da lista
     return render(request, "pages/index.html", {
         'products': featured_products
     })
@@ -31,6 +31,8 @@ def order_details(request, order_id):
 def product(request, product_id):
     # Pegar o produto
     product = get_object_or_404(Product, id=product_id)
+
+    promotions = Promotions.objects.filter(product=product)
     
     # Pegar os feedbacks associados ao produto
     feedbacks = Feedback.objects.filter(product=product).order_by('-created_at')
@@ -45,6 +47,7 @@ def product(request, product_id):
         "product": product,
         "feedbacks": feedbacks,
         "average_rating": average_rating,  # Passar a média das notas
+        "promotions": promotions
     })
 
 def products(request):

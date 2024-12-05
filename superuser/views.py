@@ -5,8 +5,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseForbidden
 from .models import Carrier, Discount
 from User.models import Feedback
-from pages.models import Category, Product, Order, Historic
-from .forms import ProductForm, CategoryForm, CarrierForm, DiscountForm
+from pages.models import Category, Product, Order, Historic, Promotions
+from .forms import ProductForm, CategoryForm, CarrierForm, DiscountForm, PromotionForm
 
 # Create your views here.
 
@@ -221,3 +221,32 @@ def view_groups(request):
     return render(request, 'superuser/groups.html', {
         'groups_list': groups_list
     })
+
+@staff_member_required
+def view_promotions(request):
+    promotions_list = Promotions.objects.all()
+    return render(request, "superuser/promotions.html", {
+        'promotions_list': promotions_list
+    })
+
+@staff_member_required
+def add_promotions(request):
+    products = Product.objects.all()
+    if request.method == 'POST':
+        form = PromotionForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Promoção cadastrada com sucesso!")
+            return redirect ('view_promotions')
+    else:
+        form = PromotionForm()
+    return render(request, 'superuser/add_promotion.html', {
+        'form': form,
+        'products': products
+    })
+
+@staff_member_required
+def delete_promotion(request, promotion_id):
+    promotion = Promotions.objects.filter(id=promotion_id)
+    promotion.delete()
+    return redirect('view_promotions')

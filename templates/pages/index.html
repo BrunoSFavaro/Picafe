@@ -1,14 +1,17 @@
 {% extends "pages/layout.html" %}
 
 {% block body %}
-        <div class="product-container">
-                {% for product in products %}
-                        <div class="featured-products">
-                                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
-                                <a href="{% url 'product' product.id %}"><h3>{{ product.name }}</h3></a>
-                                <p>⭐⭐⭐⭐⭐</p>
-                                <p class="product-price">R${{ product.price }}</p>
-                        </div>
-                {% endfor %}
-        </div>
+<div class="product-container">
+        {% for promotion in products %}
+            <div class="featured-products">
+                <img class="product-image" src="{{ promotion.product.image.url }}" alt="{{ promotion.product.name }}">
+                <a href="{% url 'product' promotion.product.id %}"><h3>{{ promotion.product.name }}</h3></a>
+                <p>⭐⭐⭐⭐⭐</p>
+                <p class="product-price">
+                    <span class="original-price">De: R$ {{ promotion.product.price }}</span><br>
+                    <span class="discounted-price">Por: R$ {{ promotion.discounted_price }}</span>
+                </p>
+            </div>
+        {% endfor %}
+</div>
 {% endblock %}

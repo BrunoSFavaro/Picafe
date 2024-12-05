@@ -11,7 +11,19 @@
 
     <div class="product-details">
         <h1>{{ product.name }}</h1>
-        <p class="product-price">R$ {{ product.price }}</p>
+
+        {% if promotions %}
+            <!-- Exibe o preço com desconto se houver promoções -->
+            <p class="product-price">
+                <span class="original-price">De: R$ {{ product.price }}</span><br>
+                {% for promotion in promotions %}
+                    <span class="discounted-price">Por: R$ {{ promotion.discounted_price }}</span>
+                {% endfor %}
+            </p>
+        {% else %}
+            <!-- Exibe o preço normal se o produto não estiver em promoção -->
+            <p class="product-price">R$ {{ product.price }}</p>
+        {% endif %}
 
         {% if product.stock_quantity > 0 %}
             <div class="action-buttons">
@@ -33,7 +45,6 @@
     {{ product.description }}
 </p>
 
-<!-- Exibir a média de notas -->
 <!-- Exibir a média de notas -->
 <div class="container mt-4">
     <div class="row">
@@ -63,7 +74,6 @@
         </div>
     </div>
 </div>
-
 
 
 {% endblock %}

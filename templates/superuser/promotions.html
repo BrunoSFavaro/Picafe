@@ -1,0 +1,49 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+{% if messages %}
+    <ul class="messages list-unstyled d-flex flex-column align-items-center">
+        {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} w-50 text-center rounded-pill py-2">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<h1>Promoções Ativas</h1>
+<a class="btn btn-primary m-3" href="{% url 'add_promotion' %}">Adicionar Promoção</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-1">Produto</th>
+            <th class="col-1">Preço Original</th>
+            <th class="col-1">Preço Promocional</th>
+            <th class="col-1">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for promotion in promotions_list %}
+        <tr>
+            <td class="pt-5">
+                <img src="{{ promotion.product.image.url }}" alt="{{ promotion.product.name }}" width="100">
+                {{ promotion.product.name }}
+            </td>
+            <td class="pt-5">R$ {{ promotion.product.price }}</td>
+            <td class="pt-5">R$ {{ promotion.discounted_price }}</td>
+            <td class="pt-5">
+                <a class="btn btn-warning" href="#">Editar</a>
+                <a class="btn btn-danger" href="{% url 'delete_promotion' promotion.id %}">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if not promotions_list %}
+    <p class="text-muted">Não há promoções ativas no momento.</p>
+{% endif %}
+
+
+
+{% endblock %}

@@ -537,3 +537,12 @@ footer {
 .feedback .feedback-item p {
     margin-bottom: 0.5rem;
 }
+
+.original-price {
+    text-decoration: line-through;
+    color: gray;
+}
+
+.discounted-price {
+    font-weight: bold;
+}
