@@ -14,7 +14,7 @@
 
 <h1>Promoções Ativas</h1>
 <a class="btn btn-primary m-3" href="{% url 'add_promotion' %}">Adicionar Promoção</a>
-<table class="table">
+<table class="table text-center align-middle">
     <thead>
         <tr>
             <th class="col-1">Produto</th>
@@ -26,13 +26,13 @@
     <tbody>
         {% for promotion in promotions_list %}
         <tr>
-            <td class="pt-5">
-                <img src="{{ promotion.product.image.url }}" alt="{{ promotion.product.name }}" width="100">
-                {{ promotion.product.name }}
+            <td>
+                <img src="{{ promotion.product.image.url }}" alt="{{ promotion.product.name }}" width="100" class="mb-2">
+                <br>{{ promotion.product.name }}
             </td>
-            <td class="pt-5">R$ {{ promotion.product.price }}</td>
-            <td class="pt-5">R$ {{ promotion.discounted_price }}</td>
-            <td class="pt-5">
+            <td>R$ {{ promotion.product.price }}</td>
+            <td>R$ {{ promotion.discounted_price }}</td>
+            <td>
                 <a class="btn btn-warning" href="#">Editar</a>
                 <a class="btn btn-danger" href="{% url 'delete_promotion' promotion.id %}">Excluir</a>
             </td>
