@@ -1,0 +1,30 @@
+{% extends 'pages/layout.html' %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="d-flex flex-column align-items-center">
+        {% if results %}
+            <!-- Mensagem centralizada -->
+            <h2 class="text-center my-4 w-100">Produtos relacionados a "{{ query }}"</h2>
+            <!-- Produtos relacionados -->
+            <div class="product-container">
+                {% for product in results %}
+                    <div class="featured-products mt-3">
+                        <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        <a href="{% url 'product' product.id %}"><h3>{{ product.name }}</h3></a>
+                        <p>⭐⭐⭐⭐⭐</p>
+                        <p class="product-price">R$ {{ product.price }}</p>
+                        <a class="add-cart" href="{% url 'add_to_cart' product.id %}">Adicionar ao Carrinho</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Mensagem de nenhum resultado encontrado -->
+            <h2 class="text-center my-4">Nenhum produto relacionado a "{{ query }}" foi encontrado.</h2>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}

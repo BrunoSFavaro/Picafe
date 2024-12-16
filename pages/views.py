@@ -421,3 +421,8 @@ def remove_from_wishlist(request, product_id):
     wishlist_item = Wishlist.objects.get(product_id=product_id, user=request.user)
     wishlist_item.delete()
     return redirect('wishlist')
+
+def search_results(request):
+    query = request.GET.get('query', '')
+    results = Product.objects.filter(name__icontains=query)  # Busca parcial
+    return render(request, 'pages/query.html', {'results': results, 'query': query})

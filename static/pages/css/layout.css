@@ -32,31 +32,66 @@ a:hover {
 /* Navbar's style  */
 .navbar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     background-color: #BF7E45;
     padding: 1rem;
 }
 
 .hamburguer {
     flex: 1;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .search-bar {
-    flex: 2;
-    text-align: center;
-    justify-content: center;
+    display: flex; /* Garante alinhamento em linha para os itens */
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    align-items: center; /* Alinha os itens verticalmente */
+    gap: 0.5rem; /* Espaçamento entre o input e o botão */
 }
 
-.search-bar textarea {
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    padding: 10px 0 0 0;
-    background-color: #EBBB92;
-    border-radius: 2rem;
-    resize: none;
+.search-container {
+    flex: 2;
+    display: flex;
+    justify-content: center; /* Centraliza a barra de busca horizontalmente */
+    align-items: center;
 }
+
+.search-bar input[type="text"] {
+    width: 100%; /* Preenche o espaço disponível */
+    max-width: 400px; /* Define um limite máximo de largura */
+    padding: 10px; /* Adiciona espaçamento interno */
+    background-color: #EBBB92; /* Cor de fundo */
+    border-radius: 2rem; /* Bordas arredondadas */
+    border: none; /* Remove a borda padrão */
+    outline: none; /* Remove o contorno azul ao focar */
+    font-family: inherit; /* Garante consistência da fonte */
+    font-size: 1rem; /* Define o tamanho da fonte */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra sutil */
+    transition: background-color 0.3s ease; /* Suaviza a mudança de cor ao interagir */
+}
+
+.search-bar input[type="text"]:focus {
+    background-color: #D8A779; /* Muda a cor de fundo ao focar */
+}
+
+.search-bar button {
+    background-color: #EBBB92; /* Mesma cor que o input */
+    border: none; /* Remove bordas padrão */
+    border-radius: 50%; /* Botão arredondado */
+    padding: 10px; /* Tamanho do botão */
+    cursor: pointer; /* Mostra que é clicável */
+    font-size: 1rem; /* Tamanho do ícone/texto */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Adiciona sombra */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Suaviza as interações */
+}
+
+.search-bar button:hover {
+    background-color: #D8A779; /* Muda a cor ao passar o mouse */
+    transform: scale(1.1); /* Aumenta ligeiramente o botão */
+}
+
 
 .nav-btns {
     flex: 0;
